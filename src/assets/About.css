@@ -1,0 +1,149 @@
+/* src/assets/About.css */
+
+/* Pengaturan Dasar */
+.about-page {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #01082D; 
+    color: #e2e8f0; 
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* Bagian Hero (DENGAN BACKGROUND IMAGE) */
+.hero {
+    /* Menggabungkan warna gradient transparan dengan gambar agar teks tetap terbaca */
+    background: 
+                url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+    color: #ADE1FB; 
+    text-align: center;
+    padding: 120px 20px;
+    border-bottom: 2px solid #266CA9;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.hero p {
+    font-size: 1.2rem;
+    color: #e2e8f0;
+}
+
+/* Efek Scroll pada Konten */
+.scroll-container {
+    display: flex;
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 0 20px;
+    gap: 40px;
+}
+
+.sticky-sidebar {
+    flex: 1;
+}
+
+.sticky-sidebar h2 {
+    font-size: 2.5rem;
+    color: #ADE1FB;
+    position: sticky;
+    top: 50px; 
+}
+
+.scroll-content {
+    flex: 2;
+    font-size: 1.1rem;
+}
+
+.scroll-content p {
+    margin-bottom: 20px;
+    background: #041D56; 
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    border: 1px solid #0F2573; 
+}
+
+/* Bagian Grid (Nilai Utama) */
+.grid-section {
+    max-width: 1200px;
+    margin: 80px auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.grid-section h2 {
+    font-size: 2.5rem;
+    color: #ADE1FB;
+    margin-bottom: 40px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.grid-item {
+    background: #041D56;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 15px rgba(0,0,0,0.4);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    border: 1px solid #0F2573;
+}
+
+.grid-item:hover {
+    transform: translateY(-10px);
+    background: #0F2573; 
+}
+
+.grid-item h3 {
+    color: #266CA9; 
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+}
+
+/* Footer */
+.about-footer {
+    text-align: center;
+    padding: 30px;
+    background: #01082D;
+    color: #ADE1FB;
+    margin-top: 50px;
+    border-top: 2px solid #0F2573;
+}
+
+/* Responsivitas */
+@media (max-width: 768px) {
+    .scroll-container {
+        flex-direction: column;
+    }
+    .sticky-sidebar h2 {
+        position: relative;
+        top: 0;
+        margin-bottom: 20px;
+    }
+}
+
+/* ==========================================
+   CLASS ANIMASI INTERSECT OBSERVER
+   ========================================== */
+.hidden-element {
+    opacity: 0;
+    filter: blur(5px);
+    transform: translateY(40px);
+    transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+}
+
+.show-element {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+}
+
+.delay-100 { transition-delay: 100ms; }
+.delay-200 { transition-delay: 200ms; }
+.delay-300 { transition-delay: 300ms; }
+.delay-400 { transition-delay: 400ms; }

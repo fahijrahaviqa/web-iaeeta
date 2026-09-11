@@ -1,0 +1,18 @@
+/* src/assets/Hero.css */
+.hidden-element {
+    opacity: 0;
+    filter: blur(5px);
+    transform: translateY(50px);
+    transition: all 1s;
+}
+
+.show-element {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+}
+
+/* Delay (jeda) animasi agar elemen muncul berurutan */
+.delay-100 { transition-delay: 100ms; }
+.delay-200 { transition-delay: 200ms; }
+.delay-300 { transition-delay: 300ms; }
