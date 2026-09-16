@@ -120,7 +120,7 @@ export default function Team() {
           </div>
           <button
             onClick={handleOpenAddModal}
-            className="group relative overflow-hidden bg-gradient-to-r from-[#85cef3] to-[#0F2573] text-white font-bold text-sm px-6 py-3 rounded-2xl transition-all shadow-lg hover:shadow-[#0F2573]/30 hover:-translate-y-1 flex items-center gap-2"
+            className="group relative overflow-hidden bg-gradient-to-r from-[#266CA9] to-[#266CA9] text-white font-bold text-sm px-6 py-3 rounded-2xl transition-all shadow-lg hover:shadow-[#0F2573]/30 hover:-translate-y-1 flex items-center gap-2"
           >
             <div className="absolute inset-0 w-full h-full bg-white/10 transform -translate-x-full group-hover:translate-x-full transition-transform duration-500"></div>
             <FiUserPlus className="text-lg relative z-10" />

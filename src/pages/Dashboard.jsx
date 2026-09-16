@@ -107,7 +107,7 @@ export default function Dashboard() {
           <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#ADE1FB]/40 to-transparent rounded-bl-full opacity-50 group-hover:scale-110 transition-transform duration-500"></div>
           
           <div className="flex justify-between items-start mb-8 relative z-10">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#041D56] to-[#01082D] flex items-center justify-center shadow-lg group-hover:-rotate-6 transition-transform duration-300">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#266CA9] to-[#0F2573] flex items-center justify-center shadow-lg group-hover:-rotate-6 transition-transform duration-300">
               <FiUsers className="text-3xl text-white" />
             </div>
             <div className="text-right">

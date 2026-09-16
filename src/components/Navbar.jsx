@@ -6,15 +6,20 @@ import logoIaeeta from "../assets/logo_iaeeta.png";
 export default function Navbar() {
   const location = useLocation();
 
-  // 1. Daftar menu navbar
+  // Daftar menu sesuaikan dengan path rute admin (/admin/...)
   const menus = [
-    { path: '/', label: 'Dashboard' },
-    { path: '/galeri', label: 'Galeri' },
-    { path: '/tim-kami', label: 'Tim Kami' },
+    { path: '/admin/', label: 'Dashboard' },
+    { path: '/admin/galeri', label: 'Galeri' },
+    { path: '/admin/tim-kami', label: 'Tim Kami' },
   ];
 
-  // 2. Mencari indeks menu aktif (0, 1, atau 2)
-  const activeIndex = menus.findIndex((menu) => location.pathname === menu.path);
+  // Mencari indeks menu aktif
+  const activeIndex = menus.findIndex((menu) => {
+    if (menu.path === '/admin/') {
+      return location.pathname === '/admin/' || location.pathname === '/admin' || location.pathname === '/';
+    }
+    return location.pathname.startsWith(menu.path);
+  });
 
   return (
     <div className="w-full px-6 pt-4 pb-2">
@@ -26,43 +31,46 @@ export default function Navbar() {
           <img  
             src={logoIaeeta} 
             alt="Logo IAEETA" 
-            className="w-9 h-9 rounded-full object-cover" 
+            className="w-8 h-8 rounded-full object-cover" 
           />
-          <span className="text-black-300 font-bold text-lg tracking-tight">
+          <span className="text-black font-bold text-lg tracking-tight">
             IAEETA-PEKANBARU
           </span>
         </div>
 
-        {/* Bagian Tengah: Menu Navigasi (Dengan Sliding Kapsul Hijau) */}
-        <div className="relative hidden md:flex items-center bg-gray-100/80 rounded-full p-1 border border-gray-200">
+        {/* Bagian Tengah: Menu Navigasi (Kapsul Biru & Teks Putih saat Aktif) */}
+        <div className="relative hidden md:flex items-center bg-gray-100 rounded-full p-1 border border-gray-200/50">
           
-          {/* Kapsul Hijau yang meluncur (Sliding Indicator) */}
+          {/* Kapsul Biru yang meluncur */}
           {activeIndex !== -1 && (
             <div 
-              // Lebar w-28 disamakan dengan lebar masing-masing menu teks
-              className="absolute top-1 left-1 bottom-1 w-28 bg-[#0f2573] rounded-full shadow-sm transition-transform duration-500 ease-[cubic-bezier(0.68,-0.15,0.27,1.15)]"
+              className="absolute top-1 left-1 bottom-1 w-28 bg-[#0f2573] rounded-full shadow-md transition-transform duration-500 ease-[cubic-bezier(0.68,-0.15,0.27,1.15)]"
               style={{
-                // Bergeser ke kanan 100% dari lebarnya sendiri setiap pindah indeks
                 transform: `translateX(${activeIndex * 100}%)`
               }}
             />
           )}
 
           {/* Teks Menu */}
-          {menus.map((menu) => (
-            <NavLink
-              key={menu.path}
-              to={menu.path}
-              className={({ isActive }) =>
-                // z-10 agar teks berada di atas kapsul hijau, w-28 (112px) agar lebar semua tombol seragam
-                `relative z-10 flex justify-center items-center w-28 py-1.5 text-sm font-semibold transition-colors duration-300 ${
-                  isActive ? 'text-white' : 'text-gray-700 hover:text-gray-900'
-                }`
-              }
-            >
-              {menu.label}
-            </NavLink>
-          ))}
+          {menus.map((menu) => {
+            const isCurrentActive = 
+              menu.path === '/admin/' 
+                ? location.pathname === '/admin/' || location.pathname === '/admin' || location.pathname === '/' 
+                : location.pathname.startsWith(menu.path);
+
+            return (
+              <NavLink
+                key={menu.path}
+                to={menu.path}
+                className={`relative z-10 flex justify-center items-center w-28 py-1.5 text-sm font-medium transition-colors duration-300 ${
+                  // Jika aktif menjadi PUTIH, jika tidak aktif menjadi abu-abu gelap
+                  isCurrentActive ? 'text-white font-bold' : 'text-gray-500 hover:text-gray-900'
+                }`}
+              >
+                {menu.label}
+              </NavLink>
+            );
+          })}
         </div>
 
         {/* Bagian Kanan: Ikon Aksi & Profil User */}
