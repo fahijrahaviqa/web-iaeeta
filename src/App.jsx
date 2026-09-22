@@ -6,6 +6,10 @@ import React, { Suspense } from "react";
 const GuestLayout = React.lazy(() => import("./layout/GuestLayout"));
 const HeroSection = React.lazy(() => import("./components/HeroSection"));
 const About = React.lazy(() => import("./pages/guest/About"));
+const Login = React.lazy(() => import("./pages/auth/Login")); 
+// const Register = React.lazy(() => import("./pages/auth/Register")); 
+const ResetPassword = React.lazy(() => import("./pages/auth/Reset"));
+const ForgotPassword = React.lazy(() => import("./pages/auth/Forgot"));
 
 // --- PIKA ---
 const SidebarMenu = React.lazy(() => import("./components/SidebarMenu"));
@@ -44,6 +48,10 @@ export default function App() {
   return (
     <Suspense fallback={<Loading />}>
       <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        {/* <Route path="/register" element={<Register />} /> */}
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route element={<GuestLayout />}>
           <Route path="/" element={<HeroSection />} />
           <Route path="/about" element={<About />} />

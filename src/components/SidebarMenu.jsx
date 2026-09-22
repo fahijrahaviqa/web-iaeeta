@@ -1,12 +1,14 @@
 import React from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { FiGrid, FiImage, FiUsers, FiSettings, FiLogOut } from 'react-icons/fi';
 import logoIaeeta from '../assets/logo_iaeeta.png';
+import { supabase } from '../supabaseClient'; // Pastikan path ini benar (naik 1 tingkat ke folder src)
 
 export default function SidebarMenu() {
   const location = useLocation();
+  const navigate = useNavigate(); // Hook untuk mengarahkan halaman
 
-  // 1. Daftar menu utama di kapsul atas (hanya Dashboard, Galeri, Tim)
+  // 1. Daftar menu utama di kapsul atas
   const topMenus = [
     { path: '/admin/', icon: <FiGrid className="text-xl" />, label: 'Dashboard' },
     { path: '/admin/galeri', icon: <FiImage className="text-xl" />, label: 'Galeri Foto' },
@@ -20,6 +22,25 @@ export default function SidebarMenu() {
     }
     return location.pathname.startsWith(menu.path);
   });
+
+  // 3. FUNGSI LOGOUT (Terhubung ke Supabase & Navigasi)
+  const handleLogout = async () => {
+    // Munculkan pop-up konfirmasi
+    const isConfirmed = window.confirm('Apakah Anda yakin ingin keluar dari mode Admin?');
+    
+    if (isConfirmed) {
+      try {
+        // Hapus sesi login di Supabase
+        await supabase.auth.signOut();
+        
+        // Arahkan otomatis ke halaman Landing Page utama
+        navigate('/');
+      } catch (error) {
+        console.error('Gagal logout:', error.message);
+        alert('Terjadi kesalahan saat mencoba keluar.');
+      }
+    }
+  };
 
   return (
     <div className="w-24 h-screen pt-6 pb-8 flex flex-col items-center justify-between">
@@ -76,7 +97,7 @@ export default function SidebarMenu() {
       {/* Bagian Bawah: Kapsul Pengaturan & Logout */}
       <div className="mt-10 bg-white rounded-full p-2 flex flex-col gap-2 shadow-[0_4px_12px_-4px_rgba(0,0,0,0.1)] border border-gray-100">
         
-        {/* Tombol Pengaturan (Path disesuaikan ke /admin/pengaturan) */}
+        {/* Tombol Pengaturan */}
         <NavLink 
           to="/admin/pengaturan" 
           className={({ isActive }) =>
@@ -91,6 +112,7 @@ export default function SidebarMenu() {
 
         {/* Tombol Logout */}
         <button 
+          onClick={handleLogout}
           className="flex justify-center items-center w-12 h-12 rounded-full text-gray-500 hover:bg-red-50 hover:text-red-500 transition-all duration-300 ease-in-out"
           title="Logout"
         >

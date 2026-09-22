@@ -72,6 +72,8 @@ export default function Team() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!nama.trim()) return alert('Nama anggota wajib diisi!');
+    if (!jabatan.trim()) return alert('Jabatan anggota wajib diisi!'); // <-- Tambahan validasi di sini
+    
     try {
       setSaving(true);
       let photoUrl = currentImageUrl;
@@ -321,6 +323,7 @@ export default function Team() {
                         onChange={(e) => setJabatan(e.target.value)}
                         placeholder="Cth: Ketua Umum"
                         className="w-full pl-11 pr-4 py-3.5 bg-[#ADE1FB]/5 border-2 border-[#ADE1FB]/50 rounded-2xl text-sm focus:outline-none focus:ring-0 focus:border-[#0F2573] text-[#01082D] font-medium transition-all"
+                        required /* <-- Tambahan atribut required di sini */
                       />
                     </div>
                   </div>

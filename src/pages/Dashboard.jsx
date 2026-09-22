@@ -94,7 +94,7 @@ export default function Dashboard() {
               Kelola dokumentasi, tambah foto kegiatan terbaru, atau hapus foto yang sudah usang.
             </p>
             <NavLink 
-              to="/galeri" 
+              to="/admin/galeri" 
               className="inline-flex items-center gap-2 text-sm font-bold text-white bg-[#0F2573] hover:bg-[#041D56] px-5 py-2.5 rounded-xl transition-colors shadow-md w-max group-hover:bg-[#266CA9]"
             >
               Kelola Galeri <FiArrowRight />
@@ -126,7 +126,7 @@ export default function Dashboard() {
               Perbarui struktur organisasi, tambah anggota baru, atau ubah jabatan pengurus saat ini.
             </p>
             <NavLink 
-              to="/tim-kami" 
+              to="/admin/tim-kami" 
               className="inline-flex items-center gap-2 text-sm font-bold text-white bg-[#0F2573] hover:bg-[#041D56] px-5 py-2.5 rounded-xl transition-colors shadow-md w-max group-hover:bg-[#266CA9]"
             >
               Kelola Tim <FiArrowRight />
