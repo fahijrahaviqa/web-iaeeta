@@ -1,0 +1,177 @@
+/* ==========================================
+   DESAIN LAYOUT KONTAK (SATU KOTAK BESAR / UNIFIED)
+   ========================================== */
+
+.contact-section {
+    max-width: 1100px; /* Lebar optimal untuk single card */
+    margin: 40px auto 100px auto;
+    padding: 0 20px;
+}
+
+/* Satu Kotak Besar (Unified Card) yang menggabungkan Info & Form */
+.contact-unified-card {
+    display: grid;
+    /* 1fr untuk sisi kiri (info), 1.5fr untuk sisi kanan (form) */
+    grid-template-columns: 1fr 1.5fr; 
+    background: rgba(4, 29, 86, 0.6);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(38, 108, 169, 0.4);
+    border-radius: 24px;
+    overflow: hidden; /* Penting! Agar sudut latar dalam tidak melewati border-radius luar */
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+}
+
+/* ==========================================
+   SISI KIRI: INFO PANEL
+   ========================================== */
+.contact-info-side {
+    background: rgba(1, 8, 45, 0.5); /* Warna slightly lebih gelap sebagai pemisah visual */
+    padding: 50px 40px;
+    color: #ffffff;
+    border-right: 1px solid rgba(38, 108, 169, 0.2); /* Garis pemisah tipis di tengah */
+}
+
+.contact-info-side h2 {
+    font-size: 2rem;
+    color: #ADE1FB;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.info-desc {
+    color: #d1d5db;
+    margin-bottom: 40px;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.info-icon {
+    font-size: 1.5rem;
+    background: rgba(38, 108, 169, 0.3);
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid #266CA9;
+    flex-shrink: 0; /* Mencegah ikon mengecil */
+}
+
+.info-item h3 {
+    color: #ADE1FB;
+    font-size: 1.05rem;
+    margin-bottom: 3px;
+}
+
+.info-item p {
+    color: #d1d5db;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* ==========================================
+   SISI KANAN: FORM PANEL
+   ========================================== */
+.contact-form-side {
+    padding: 50px 40px;
+}
+
+.form-title {
+    font-size: 1.8rem;
+    color: #ffffff;
+    margin-bottom: 30px;
+}
+
+.modern-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* Teknik Floating Label */
+.form-group {
+    position: relative;
+}
+
+.modern-input {
+    width: 100%;
+    background: rgba(1, 8, 45, 0.6);
+    border: 1px solid rgba(173, 225, 251, 0.2);
+    border-radius: 8px;
+    padding: 15px;
+    color: #ffffff;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.modern-input:focus {
+    border-color: #ADE1FB;
+    box-shadow: 0 0 10px rgba(173, 225, 251, 0.2);
+    background: rgba(1, 8, 45, 0.9);
+}
+
+.modern-label {
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    color: #8c98a4;
+    font-size: 1rem;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.modern-input:focus ~ .modern-label,
+.modern-input:not(:placeholder-shown) ~ .modern-label {
+    top: -10px;
+    left: 10px;
+    font-size: 0.8rem;
+    color: #ADE1FB;
+    background-color: #041D56; /* Warna disesuaikan dengan background form panel */
+    padding: 0 5px;
+    border-radius: 3px;
+}
+
+.modern-submit-btn {
+    background: linear-gradient(135deg, #266CA9, #0F2573);
+    color: #ffffff;
+    padding: 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 10px;
+}
+
+.modern-submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(38, 108, 169, 0.4);
+}
+
+/* ==========================================
+   RESPONSIVITAS (Layar Kecil / HP)
+   ========================================== */
+@media (max-width: 900px) {
+    .contact-unified-card {
+        grid-template-columns: 1fr; /* Form akan turun ke bawah info di layar kecil */
+    }
+    
+    .contact-info-side {
+        border-right: none;
+        border-bottom: 1px solid rgba(38, 108, 169, 0.2);
+    }
+
+    .contact-info-side, .contact-form-side {
+        padding: 30px 25px;
+    }
+}

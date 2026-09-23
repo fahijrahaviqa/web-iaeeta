@@ -1,0 +1,132 @@
+/* ==========================================
+   DESAIN HALAMAN MEDIA & BERITA
+   ========================================== */
+
+.media-section {
+    max-width: 1200px;
+    margin: 50px auto 100px auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.media-title {
+    font-size: 2.5rem;
+    color: #ADE1FB;
+    margin-bottom: 50px;
+    font-weight: bold;
+}
+
+/* Grid untuk barisan Kartu Berita */
+.media-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 40px;
+}
+
+/* Desain Kartu Media Utama (Efek Glassmorphism) */
+.media-card {
+    background: rgba(4, 29, 86, 0.5); 
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    border: 1px solid rgba(38, 108, 169, 0.3);
+    overflow: hidden; /* Penting agar gambar tidak keluar dari radius border */
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.media-card:hover {
+    transform: translateY(-10px);
+    border-color: #266CA9;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+}
+
+/* Container Gambar & Efek Hover Zoom */
+.media-image-container {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+}
+
+.media-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.media-card:hover .media-image {
+    transform: scale(1.1); /* Efek gambar membesar saat kursor diarahkan */
+}
+
+/* Label Kategori (Muncul di atas gambar) */
+.media-category {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background-color: #266CA9;
+    color: white;
+    padding: 5px 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border-radius: 9999px;
+    z-index: 10;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+/* Area Teks di Bawah Gambar */
+.media-content {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Mendorong tombol ke bawah agar rata semua */
+}
+
+.media-date {
+    font-size: 0.85rem;
+    color: #ADE1FB;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.media-heading {
+    color: #ffffff;
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    font-weight: bold;
+    line-height: 1.4;
+    transition: color 0.3s ease;
+}
+
+.media-card:hover .media-heading {
+    color: #ADE1FB;
+}
+
+.media-desc {
+    color: #d1d5db;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 25px;
+    flex-grow: 1; /* Mengisi ruang kosong */
+}
+
+/* Tombol Baca Selengkapnya */
+.media-btn {
+    align-self: flex-start;
+    background: transparent;
+    color: #ADE1FB;
+    border: none;
+    font-weight: bold;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    padding: 0;
+}
+
+.media-btn:hover {
+    color: #ffffff;
+}
