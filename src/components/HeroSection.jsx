@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import "../assets/Hero.css";
+import logoIaeeta from "../assets/logo_iaeeta.png"; // Import logo IAEETA
 import About from "../pages/guest/About";
 import OurTim from "../pages/guest/OurTim";
 import Contact from "../pages/guest/Contact";
@@ -35,19 +36,27 @@ export default function HeroSection() {
         <div className="hero-overlay"></div>
 
         <div className="hero-content hidden-element">
+          {/* Logo IAEETA ditambahkan di atas judul */}
+          <img 
+            src={logoIaeeta} 
+            alt="Logo IAEETA" 
+            style={{ width: '120px', height: 'auto', margin: '0 auto 20px', display: 'block' }} 
+            className="hero-logo hidden-element" 
+          />
+
           <h1 className="hero-title">
-            Keselamatan Udara <br />
-            <span className="text-highlight">Adalah Prioritas Kami</span>
+            Indonesian Aviation Electronics And Electrical Technician Association 
           </h1>
           <p className="hero-subtitle delay-100 hidden-element">
-            Selamat datang di Portal Resmi Organisasi Tim CNS (Communication, Navigation, Surveillance) AirNav.
+            Wadah kolaborasi, informasi, dan inovasi bagi para profesional teknik penerbangan.
           </p>
           <div className="hero-buttons delay-200 hidden-element">
-            <button className="btn-primary">Pelajari Layanan Kami</button>
-            <button className="btn-secondary">Hubungi Tim</button>
+            {/* <button className="btn-primary">Gabung Komunitas</button> */}
+            <button className="btn-secondary">Jelajahi Media</button>
           </div>
         </div>
       </section>
+      
       {/* ================= KOMPONEN HALAMAN LAINNYA ================= */}
       <section>
         <About />

@@ -24,7 +24,7 @@ export default function About() {
     <div className="about-page">
       {/* Bagian Hero Tanpa Gambar, Menggunakan Paragraf Pendahuluan */}
       <header className="about-hero">
-        <h1 className="hidden-element">Tentang Tim CNS</h1>
+        <h1 className="hidden-element">Tentang Tim</h1>
         <p className="hidden-element delay-100">
           Garda terdepan dalam memastikan keandalan sistem telekomunikasi, navigasi, dan pengamatan udara (Communication, Navigation, Surveillance). Kami berdedikasi penuh selama 24 jam sehari, 7 hari seminggu, untuk menjaga kelancaran operasional dan keselamatan setiap pergerakan pesawat di ruang udara nusantara.
         </p>

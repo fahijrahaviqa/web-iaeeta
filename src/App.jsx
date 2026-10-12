@@ -7,17 +7,18 @@ import Contact from "./pages/guest/Contact";
 const GuestLayout = React.lazy(() => import("./layout/GuestLayout"));
 const HeroSection = React.lazy(() => import("./components/HeroSection"));
 const About = React.lazy(() => import("./pages/guest/About"));
-const Login = React.lazy(() => import("./pages/auth/Login")); 
-// const Register = React.lazy(() => import("./pages/auth/Register")); 
+const Login = React.lazy(() => import("./pages/auth/Login"));
 const ResetPassword = React.lazy(() => import("./pages/auth/Reset"));
 const ForgotPassword = React.lazy(() => import("./pages/auth/Forgot"));
 const Media = React.lazy(() => import("./pages/guest/Media"));
+// IMPORT BARU YANG DITAMBAHKAN:
+const MediaDetail = React.lazy(() => import("./pages/guest/MediaDetail"));
 const contact = React.lazy(() => import("./pages/guest/Contact"));
 const OurTim = React.lazy(() => import("./pages/guest/OurTim"));
 
 // --- PIKA ---
 const SidebarMenu = React.lazy(() => import("./components/SidebarMenu"));
-const Navbar = React.lazy(() => import("./components/Navbar")); 
+const Navbar = React.lazy(() => import("./components/Navbar"));
 const Dashboard = React.lazy(() => import("./pages/Dashboard"));
 const Gallery = React.lazy(() => import("./pages/Gallery"));
 const Team = React.lazy(() => import("./pages/Team"));
@@ -48,14 +49,12 @@ function AdminLayout() {
   );
 }
 
-
-export default function App(){
+export default function App() {
   return (
     <Suspense fallback={<Loading />}>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        {/* <Route path="/register" element={<Register />} /> */}
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route element={<GuestLayout />}>
           <Route path="/" element={<HeroSection />} />
@@ -64,6 +63,8 @@ export default function App(){
           <Route path="/OurTim" element={<OurTim />} />
           <Route path="/Media" element={<Media />} />
           <Route path="/Contact" element={<Contact />} />
+          {/* Rute MediaDetail sekarang sudah bisa membaca import-nya */}
+          <Route path="/media/:id" element={<MediaDetail />} />
         </Route>
         <Route path="/admin/*" element={<AdminLayout />} />
       </Routes>

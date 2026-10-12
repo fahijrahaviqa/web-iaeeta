@@ -7,17 +7,17 @@ export default function Footer() {
   return (
     <footer className="bg-white border-t border-gray-200 pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        
+
         {/* Grid Atas: Informasi & Link */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
-          
+
           {/* Kolom 1: Brand & Deskripsi */}
           <div className="flex flex-col">
             <div className="flex items-center gap-3 mb-6">
-              <img 
-                src={logoIaeeta} 
-                alt="Logo IAEETA" 
-                className="w-12 h-12 rounded-full object-cover shadow-sm border border-gray-100" 
+              <img
+                src={logoIaeeta}
+                alt="Logo IAEETA"
+                className="w-12 h-12 rounded-full object-cover shadow-sm border border-gray-100"
               />
               <span className="text-[#041D56] font-bold text-xl tracking-tight">
                 IAEETA PEKANBARU
@@ -33,16 +33,19 @@ export default function Footer() {
             <h3 className="text-[#041D56] font-bold text-lg mb-6">Tautan Cepat</h3>
             <ul className="flex flex-col gap-4 text-sm text-gray-600">
               <li>
-                <Link to="/" className="hover:text-[#266CA9] transition-colors duration-300">Dashboard</Link>
+                <Link to="/" className="hover:text-[#266CA9] transition-colors duration-300">Beranda</Link>
               </li>
               <li>
-                <Link to="/tim-kami" className="hover:text-[#266CA9] transition-colors duration-300">Tim Kami</Link>
+                <Link to="/About" className="hover:text-[#266CA9] transition-colors duration-300">Tentang Kami</Link>
               </li>
               <li>
-                <Link to="/media" className="hover:text-[#266CA9] transition-colors duration-300">Media & Berita</Link>
+                <Link to="/OurTim" className="hover:text-[#266CA9] transition-colors duration-300">Tim Kami</Link>
               </li>
               <li>
-                <Link to="/galeri" className="hover:text-[#266CA9] transition-colors duration-300">Galeri</Link>
+                <Link to="/Media" className="hover:text-[#266CA9] transition-colors duration-300">Media & Berita</Link>
+              </li>
+              <li>
+                <Link to="/Contact" className="hover:text-[#266CA9] transition-colors duration-300">Hubungi Kami</Link>
               </li>
             </ul>
           </div>
@@ -97,7 +100,7 @@ export default function Footer() {
             <a href="#" className="hover:text-[#266CA9] transition-colors">Syarat & Ketentuan</a>
           </div>
         </div>
-        
+
       </div>
     </footer>
   );

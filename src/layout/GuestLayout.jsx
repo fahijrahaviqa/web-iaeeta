@@ -1,17 +1,26 @@
 import { Link, Outlet } from "react-router-dom";
 import Footer from "../components/Footer";
 
+// 1. Import logo dari folder assets
+// Pastikan path '../assets/' sesuai dengan lokasi file GuestLayout kamu berada
+import logoIaeeta from "../assets/logo_iaeeta.png";
+
 export default function GuestLayout({ children }) {
   return (
     <div className="min-h-screen bg-[#01082D] text-white">
       <header className="flex justify-between items-center px-8 py-4 border-b border-[#0F2573]">
-        <div className="text-2xl font-bold">
-          <span className="text-white">IAE</span><span className="text-[#ADE1FB]">ETA</span>
+        
+        {/* Container Logo dan Judul */}
+        <div className="flex items-center gap-2">
+          {/* 2. Gunakan variabel logoIaeeta di dalam kurung kurawal */}
+          <img src={logoIaeeta} alt="Logo IAEETA" className="h-8 w-auto" />
+
+          <div className="text-2xl font-bold">
+            <span className="text-white">IAEETA</span><span className="text-[#ADE1FB]">PEKANBARU</span>
+          </div>
         </div>
         
-        {/* Tambahkan flex dan items-center agar menu sejajar sempurna */}
         <nav className="space-x-6 text-sm flex items-center">
-          {/* Tambahkan efek hover text-[#ADE1FB] pada link agar lebih interaktif */}
           <Link to="/" className="text-gray-300 hover:text-[#ADE1FB] transition-colors">Menu</Link>
           <Link to="/About" className="text-gray-300 hover:text-[#ADE1FB] transition-colors">Tentang Kami</Link>
           <Link to="/OurTim" className="text-gray-300 hover:text-[#ADE1FB] transition-colors">Tim Kami</Link>
@@ -19,7 +28,6 @@ export default function GuestLayout({ children }) {
           <Link to="/Contact" className="text-gray-300 hover:text-[#ADE1FB] transition-colors">Kontak Kami</Link>
           
           <Link to="/Login">
-            {/* Sesuaikan warna tombol Login dengan palet biru terang */}
             <button className="px-5 py-1.5 rounded-full text-[#ADE1FB] border border-[#ADE1FB] hover:bg-[#ADE1FB] hover:text-[#01082D] transition-all font-semibold">
               Login
             </button>
