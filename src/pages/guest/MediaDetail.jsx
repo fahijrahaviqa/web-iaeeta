@@ -4,7 +4,7 @@ import { supabase } from '../../supabaseClient'; // Sesuaikan lokasi impor
 import '../../assets/About.css'; 
 
 export default function MediaDetail() {
-  const { id } = useParams(); // Mengambil parameter :id dari URL
+  const { id } = useParams();
   const navigate = useNavigate();
   const [article, setArticle] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -16,7 +16,7 @@ export default function MediaDetail() {
           .from('gallery')
           .select('*')
           .eq('id', id)
-          .single(); // Ambil hanya satu baris data berdasarkan ID
+          .single(); 
 
         if (error) throw error;
         setArticle(data);
@@ -36,38 +36,74 @@ export default function MediaDetail() {
     return new Date(dateString).toLocaleDateString('id-ID', options);
   };
 
-  if (isLoading) return <div className="about-page"><p style={{ textAlign: 'center', marginTop: '50px' }}>Memuat artikel...</p></div>;
-  if (!article) return <div className="about-page"><p style={{ textAlign: 'center', marginTop: '50px' }}>Artikel tidak ditemukan.</p></div>;
+  // Tampilan Loading yang selaras dengan tema
+  if (isLoading) return (
+    <div className="about-page flex items-center justify-center min-h-screen">
+      <div className="text-[#ADE1FB] text-xl animate-pulse flex flex-col items-center gap-3">
+        <span className="text-3xl">⏳</span>
+        <p>Memuat artikel...</p>
+      </div>
+    </div>
+  );
+
+  // Tampilan Error / Tidak Ditemukan
+  if (!article) return (
+    <div className="about-page flex items-center justify-center min-h-screen">
+      <div className="text-gray-300 text-xl flex flex-col items-center gap-3">
+        <span className="text-4xl">⚠️</span>
+        <p>Artikel tidak ditemukan.</p>
+        <button onClick={() => navigate(-1)} className="mt-4 text-[#ADE1FB] hover:text-white underline">
+          Kembali ke halaman sebelumnya
+        </button>
+      </div>
+    </div>
+  );
 
   return (
-    <div className="about-page">
-      <div style={{ maxWidth: '800px', margin: '0 auto', padding: '40px 20px' }}>
+    <div className="about-page pt-24 pb-20 px-4">
+      <div className="max-w-4xl mx-auto">
         
-        {/* Tombol Kembali */}
+        {/* Tombol Kembali Modern */}
         <button 
           onClick={() => navigate(-1)} 
-          style={{ marginBottom: '20px', padding: '8px 16px', cursor: 'pointer', border: 'none', borderRadius: '4px', background: '#e0e0e0' }}
+          className="flex items-center gap-2 text-[#ADE1FB] hover:text-white transition-colors duration-300 mb-8 font-semibold group"
         >
-          &larr; Kembali
+          <span className="transform group-hover:-translate-x-1 transition-transform">&larr;</span> 
+          Kembali ke Daftar Media
         </button>
 
-        {/* Gambar Penuh */}
-        <img 
-          src={article.image_url} 
-          alt={article.title} 
-          style={{ width: '100%', maxHeight: '450px', objectFit: 'cover', borderRadius: '12px', marginBottom: '20px' }} 
-        />
+        {/* Kotak Artikel (Efek Glassmorphism) */}
+        <div className="bg-[#041D56]/50 backdrop-blur-md border border-[#0F2573] rounded-3xl p-6 md:p-10 shadow-2xl">
+          
+          {/* Gambar Penuh dengan proporsi proporsional */}
+          <div className="w-full h-[300px] md:h-[450px] overflow-hidden rounded-2xl mb-10 shadow-lg border border-[#0F2573]/50">
+            <img 
+              src={article.image_url} 
+              alt={article.title} 
+              className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" 
+            />
+          </div>
 
-        {/* Konten Detail */}
-        <h1 style={{ fontSize: '2.5rem', marginBottom: '10px' }}>{article.title}</h1>
-        <p style={{ color: '#666', marginBottom: '30px' }}>{formatDate(article.tanggal_kegiatan)}</p>
-        
-        {/* Deskripsi Lengkap */}
-        <div style={{ lineHeight: '1.8', fontSize: '1.1rem', color: '#333' }}>
-          {/* Mengubah line break database menjadi <br /> agar format paragraf terjaga */}
-          {article.description.split('\n').map((paragraph, index) => (
-            <p key={index} style={{ marginBottom: '16px' }}>{paragraph}</p>
-          ))}
+          {/* Header Konten: Judul & Tanggal */}
+          <div className="mb-8 border-b border-[#0F2573] pb-8">
+            <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight">
+              {article.title}
+            </h1>
+            <div className="flex items-center gap-2 text-[#ADE1FB] text-sm md:text-base font-medium">
+              <span>📅</span>
+              <span>Dipublikasikan pada {formatDate(article.tanggal_kegiatan)}</span>
+            </div>
+          </div>
+          
+          {/* Deskripsi Lengkap dengan tipografi yang nyaman */}
+          <div className="text-gray-300 text-lg leading-relaxed md:leading-loose space-y-6">
+            {article.description.split('\n').map((paragraph, index) => (
+              paragraph.trim() !== '' && (
+                <p key={index} className="text-justify">{paragraph}</p>
+              )
+            ))}
+          </div>
+
         </div>
 
       </div>

@@ -56,7 +56,7 @@ export default function Media() {
       </header>
 
       <section className="media-section">
-        <h2 className="hidden-element media-title">Berita Terkini</h2>
+        <h2 className="hidden-element media-title">Kegiatan</h2>
         
         {isLoading ? (
           <p style={{ textAlign: 'center' }}>Memuat berita terkini...</p>
@@ -75,7 +75,7 @@ export default function Media() {
                     <div className="media-content">
                       <p className="media-date">{formatDate(item.tanggal_kegiatan)}</p>
                       <h3 className="media-heading">{item.title}</h3>
-                      <p className="media-desc">{item.description}</p>
+                    
                       
                       {/* 3. Tambahkan onClick pada tombol */}
                       <button 
