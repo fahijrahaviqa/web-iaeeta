@@ -45,11 +45,9 @@ export default function HeroSection() {
           />
 
           <h1 className="hero-title">
-            Indonesian Aviation Electronics And Electrical Technician Association 
-          </h1>
-          <p className="hero-subtitle delay-100 hidden-element">
-            Wadah kolaborasi, informasi, dan inovasi bagi para profesional teknik penerbangan.
-          </p>
+            Indonesian Aviation Electronics And Electrical Technician Association (IAEETA)
+          </h1> 
+
           <div className="hero-buttons delay-200 hidden-element">
             {/* <button className="btn-primary">Gabung Komunitas</button> */}
             <button className="btn-secondary">Jelajahi Media</button>
