@@ -1,10 +1,12 @@
 import { Link, Outlet } from "react-router-dom";
+import Footer from "../components/Footer"; // 1. Pastikan Anda mengimpor komponen Footer di sini
 
 export default function GuestLayout({ children }) {
   return (
     <div className="min-h-screen bg-[#01082D] text-white w-full overflow-x-hidden flex flex-col">
+      
+      {/* Header / Navbar */}
       <header className="flex flex-col md:flex-row justify-between items-center px-4 md:px-8 py-4 border-b border-[#0F2573] w-full">
-        
         <div className="text-2xl font-bold mb-4 md:mb-0">
           <span className="text-white">IAE</span><span className="text-[#ADE1FB]">ETA</span>
         </div>
@@ -22,9 +24,12 @@ export default function GuestLayout({ children }) {
             </button>
           </Link>
         </nav>
-      </header>
+      </header>   
+      <main className="w-full flex-grow">
+        <Outlet />
+      </main>
+      <Footer />
       
-      <main className="w-full flex-grow"><Outlet /></main>
     </div>
   );
 }
