@@ -12,7 +12,6 @@ const ResetPassword = React.lazy(() => import("./pages/auth/Reset"));
 const ForgotPassword = React.lazy(() => import("./pages/auth/Forgot"));
 const Media = React.lazy(() => import("./pages/guest/Media"));
 // IMPORT BARU YANG DITAMBAHKAN:
-const MediaDetail = React.lazy(() => import("./pages/guest/MediaDetail"));
 const contact = React.lazy(() => import("./pages/guest/Contact"));
 const OurTim = React.lazy(() => import("./pages/guest/OurTim"));
 
@@ -63,8 +62,6 @@ export default function App() {
           <Route path="/OurTim" element={<OurTim />} />
           <Route path="/Media" element={<Media />} />
           <Route path="/Contact" element={<Contact />} />
-          {/* Rute MediaDetail sekarang sudah bisa membaca import-nya */}
-          <Route path="/media/:id" element={<MediaDetail />} />
         </Route>
         <Route path="/admin/*" element={<AdminLayout />} />
       </Routes>

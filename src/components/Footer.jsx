@@ -20,7 +20,7 @@ export default function Footer() {
                 className="w-12 h-12 rounded-full object-cover shadow-sm border border-gray-100"
               />
               <span className="text-[#041D56] font-bold text-xl tracking-tight">
-                IAEETA PEKANBARU
+                IAEETA DPC PEKANBARU
               </span>
             </div>
             <p className="text-gray-600 leading-relaxed text-sm">
@@ -76,14 +76,11 @@ export default function Footer() {
               Dapatkan informasi terbaru mengenai kegiatan operasional kami.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-600 hover:bg-[#266CA9] hover:text-white transition-all duration-300 shadow-sm border border-gray-200">
+              <a href="https://www.instagram.com/iaeeta.pekanbaru/" className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-600 hover:bg-[#266CA9] hover:text-white transition-all duration-300 shadow-sm border border-gray-200">
                 <FiInstagram size={18} />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-600 hover:bg-[#266CA9] hover:text-white transition-all duration-300 shadow-sm border border-gray-200">
+              <a href="https://web.facebook.com/iaeetaid/?_rdc=1&_rdr#" className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-600 hover:bg-[#266CA9] hover:text-white transition-all duration-300 shadow-sm border border-gray-200">
                 <FiFacebook size={18} />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-600 hover:bg-[#266CA9] hover:text-white transition-all duration-300 shadow-sm border border-gray-200">
-                <FiYoutube size={18} />
               </a>
             </div>
           </div>

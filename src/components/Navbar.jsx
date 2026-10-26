@@ -66,7 +66,7 @@ export default function Navbar() {
         {/* Bagian Kiri: Logo & Nama Brand */}
         <div className="flex items-center gap-2 pl-2 cursor-pointer">
           <img src={logoIaeeta} alt="Logo IAEETA" className="w-8 h-8 rounded-full object-cover" />
-          <span className="text-black font-bold text-lg tracking-tight">IAEETA-PEKANBARU</span>
+          <span className="text-black font-bold text-lg tracking-tight">IAEETA DPC PEKANBARU</span>
         </div>
 
         {/* Bagian Tengah: Menu Navigasi */}

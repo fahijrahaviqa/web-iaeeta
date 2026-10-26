@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { supabase } from '../../supabaseClient'; // Path sudah diperbaiki
-import { FiMail, FiLock, FiLogIn, FiAlertCircle } from 'react-icons/fi';
-import logoIaeeta from '../../assets/logo_iaeeta.png'; // Path sudah diperbaiki
+import { supabase } from '../../supabaseClient'; 
+import { FiMail, FiLock, FiLogIn, FiAlertCircle, FiArrowLeft } from 'react-icons/fi';
+import logoIaeeta from '../../assets/logo_iaeeta.png'; 
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -39,70 +39,88 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f8f9fa] to-[#ADE1FB]/30 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white rounded-[2.5rem] p-8 shadow-[0_10px_40px_-10px_rgba(4,29,86,0.1)] border border-gray-100">
+    <div className="min-h-screen relative flex items-center justify-center p-4 bg-slate-50 overflow-hidden">
+      
+      {/* Ornamen Background (Estetika Blur) */}
+      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-[#ADE1FB] rounded-full mix-blend-multiply filter blur-[120px] opacity-60 animate-pulse"></div>
+      <div className="absolute bottom-[-10%] right-[-5%] w-[400px] h-[400px] bg-[#266CA9] rounded-full mix-blend-multiply filter blur-[120px] opacity-20"></div>
+
+      {/* Tombol Kembali ke Halaman Utama */}
+      <Link 
+        to="/" 
+        className="absolute top-6 left-6 z-20 flex items-center gap-2 px-5 py-2.5 bg-white/80 backdrop-blur-md border border-white/50 rounded-full text-[#0F2573] font-bold text-sm shadow-sm hover:shadow-md hover:bg-white hover:-translate-x-1 transition-all duration-300"
+      >
+        <FiArrowLeft className="text-lg" />
+        <span>Kembali ke Beranda</span>
+      </Link>
+
+      {/* Kartu Login */}
+      <div className="relative z-10 max-w-md w-full bg-white/90 backdrop-blur-xl rounded-[2.5rem] p-8 sm:p-10 shadow-[0_20px_60px_-15px_rgba(4,29,86,0.15)] border border-white/60">
         
         {/* Header Login */}
         <div className="flex flex-col items-center mb-8">
-          <div className="w-20 h-20 rounded-full bg-white p-2 shadow-md mb-4 border border-gray-50">
-            <img src={logoIaeeta} alt="Logo IAEETA" className="w-full h-full object-cover rounded-full" />
+          <div className="relative group">
+            <div className="absolute inset-0 bg-[#ADE1FB] rounded-full blur-md opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500"></div>
+            <div className="relative w-24 h-24 rounded-full bg-white p-2 shadow-lg mb-5 border border-gray-100 transform transition-transform duration-500 group-hover:scale-105">
+              <img src={logoIaeeta} alt="Logo IAEETA" className="w-full h-full object-cover rounded-full" />
+            </div>
           </div>
-          <h2 className="text-2xl font-extrabold text-[#01082D]">Admin Panel</h2>
-          <p className="text-sm text-gray-500 mt-1">Masuk untuk mengelola sistem IAEETA</p>
+          <h2 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#01082D] to-[#266CA9]">Admin Panel</h2>
+          <p className="text-sm font-medium text-gray-500 mt-2">Masuk untuk mengelola sistem IAEETA</p>
         </div>
 
         {/* Notifikasi Error */}
         {errorMsg && (
-          <div className="mb-6 bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl flex items-center gap-3 text-sm font-medium animate-in fade-in">
-            <FiAlertCircle className="text-lg shrink-0" />
-            <span>{errorMsg}</span>
+          <div className="mb-6 bg-red-50/80 backdrop-blur-sm border border-red-200 text-red-600 px-4 py-3 rounded-2xl flex items-start gap-3 text-sm font-medium animate-in slide-in-from-top-2 fade-in duration-300 shadow-sm">
+            <FiAlertCircle className="text-lg shrink-0 mt-0.5" />
+            <span className="leading-relaxed">{errorMsg}</span>
           </div>
         )}
 
         {/* Form Login */}
         <form onSubmit={handleLogin} className="space-y-5">
           {/* Input Email */}
-          <div>
-            <label className="block text-xs font-extrabold text-[#041D56] uppercase tracking-wider mb-2 pl-1">
+          <div className="group">
+            <label className="block text-xs font-extrabold text-[#041D56] uppercase tracking-wider mb-2 pl-2 transition-colors group-focus-within:text-[#266CA9]">
               Email Organisasi
             </label>
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <FiMail className="text-gray-400" />
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-[#266CA9]">
+                <FiMail className="text-gray-400 group-focus-within:text-[#266CA9] transition-colors" />
               </div>
               <input
                 type="email"
                 placeholder="admin@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-2 border-gray-200 focus:border-[#0F2573] rounded-2xl text-sm font-medium text-[#01082D] focus:outline-none transition-all"
+                className="w-full pl-11 pr-4 py-3.5 bg-gray-50/50 border-2 border-gray-200 focus:border-[#266CA9] focus:bg-white rounded-2xl text-sm font-medium text-[#01082D] focus:outline-none focus:ring-4 focus:ring-[#ADE1FB]/30 transition-all duration-300"
                 required
               />
             </div>
           </div>
 
           {/* Input Password */}
-          <div>
-            <label className="block text-xs font-extrabold text-[#041D56] uppercase tracking-wider mb-2 pl-1">
+          <div className="group">
+            <label className="block text-xs font-extrabold text-[#041D56] uppercase tracking-wider mb-2 pl-2 transition-colors group-focus-within:text-[#266CA9]">
               Kata Sandi
             </label>
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <FiLock className="text-gray-400" />
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-[#266CA9]">
+                <FiLock className="text-gray-400 group-focus-within:text-[#266CA9] transition-colors" />
               </div>
               <input
                 type="password"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-2 border-gray-200 focus:border-[#0F2573] rounded-2xl text-sm font-medium text-[#01082D] focus:outline-none transition-all"
+                className="w-full pl-11 pr-4 py-3.5 bg-gray-50/50 border-2 border-gray-200 focus:border-[#266CA9] focus:bg-white rounded-2xl text-sm font-medium text-[#01082D] focus:outline-none focus:ring-4 focus:ring-[#ADE1FB]/30 transition-all duration-300"
                 required
               />
             </div>
             
             {/* Tautan Lupa Kata Sandi */}
-            <div className="flex justify-end mt-2">
-              <Link to="/forgot-password" className="text-xs text-[#266CA9] font-bold hover:text-[#0F2573] hover:underline transition-colors">
+            <div className="flex justify-end mt-3">
+              <Link to="/forgot-password" className="text-xs text-[#266CA9] font-bold hover:text-[#0F2573] transition-colors flex items-center gap-1 group-hover:underline">
                 Lupa kata sandi?
               </Link>
             </div>
@@ -112,21 +130,34 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full mt-2 bg-[#266CA9] hover:bg-[#0F2573] text-white text-sm font-bold py-4 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-70"
+            className="relative w-full mt-4 overflow-hidden group bg-gradient-to-r from-[#266CA9] to-[#0F2573] hover:from-[#0F2573] hover:to-[#01082D] text-white text-sm font-bold py-4 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
           >
-            {loading ? 'Memverifikasi...' : <><FiLogIn size={18} /> Masuk ke Dashboard</>}
+            {/* Efek kilau putih saat hover pada tombol */}
+            <div className="absolute inset-0 -translate-x-full bg-white/20 group-hover:animate-[shimmer_1s_ease-in-out] skew-x-12"></div>
+            
+            <span className="relative z-10 flex items-center gap-2">
+              {loading ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  Memverifikasi...
+                </>
+              ) : (
+                <>
+                  <FiLogIn size={18} /> Masuk ke Dashboard
+                </>
+              )}
+            </span>
           </button>
         </form>
-        
-        {/* Tautan ke Halaman Registrasi (Bisa dihapus nanti jika tidak diperlukan publik) */}
-        {/* <p className="mt-8 text-center text-sm text-gray-500">
-          Belum mendaftarkan email?{' '}
-          <Link to="/register" className="text-[#266CA9] font-bold hover:underline transition-colors">
-            Daftar di sini
-          </Link>
-        </p> */}
-        
+
       </div>
+      
+      {/* CSS Khusus untuk animasi tombol login */}
+      <style>{`
+        @keyframes shimmer {
+          100% { transform: translateX(150%); }
+        }
+      `}</style>
     </div>
   );
 }

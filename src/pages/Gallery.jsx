@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PageHeader from '../components/PageHeader';
 import { getGalleryItems, addGalleryItem, deleteGalleryItem, updateGalleryItem } from '../galleryService';
-import { FiUploadCloud, FiTrash2, FiCamera, FiImage, FiType, FiAlignLeft, FiX, FiEdit2, FiCheck, FiCalendar } from 'react-icons/fi';
+import { FiUploadCloud, FiTrash2, FiCamera, FiImage, FiType, FiAlignLeft, FiX, FiEdit2, FiCheck, FiCalendar, FiFilter } from 'react-icons/fi';
 
 export default function Gallery() {
   const [items, setItems] = useState([]);
@@ -19,15 +19,28 @@ export default function Gallery() {
   const [editId, setEditId] = useState(null);
   const [currentImageUrl, setCurrentImageUrl] = useState(null);
 
-  // State Konfirmasi Hapus (BARU)
+  // State Konfirmasi Hapus
   const [confirmId, setConfirmId] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
 
-  const fetchGallery = async () => {
+  // State Filter Baru (Semua, per-Bulan/Tahun)
+  const [selectedFilter, setSelectedFilter] = useState('All');
+
+const fetchGallery = async () => {
     try {
       setLoading(true);
       const data = await getGalleryItems();
-      setItems(data || []);
+      
+      // URUTKAN BERDASARKAN TANGGAL KEGIATAN (Terbaru di Paling Atas)
+      const sortedData = (data || []).sort((a, b) => {
+        if (!a.tanggal_kegiatan) return 1;
+        if (!b.tanggal_kegiatan) return -1;
+        
+        // Logika b - a memastikan tanggal terbaru berada di atas
+        return new Date(b.tanggal_kegiatan) - new Date(a.tanggal_kegiatan);
+      });
+
+      setItems(sortedData);
     } catch (err) {
       console.error(err);
     } finally {
@@ -90,7 +103,7 @@ export default function Gallery() {
       }
       
       handleCancelEdit();
-      fetchGallery();
+      fetchGallery(); // Otomatis akan diurutkan ulang dengan benar setelah fetch
     } catch (err) {
       alert(`Gagal menyimpan data: ${err.message}`);
     } finally {
@@ -98,7 +111,6 @@ export default function Gallery() {
     }
   };
 
-  // Logika Hapus yang Baru (Tanpa window.confirm)
   const handleDelete = async (id) => {
     setDeletingId(id);
     try {
@@ -109,7 +121,7 @@ export default function Gallery() {
       alert(`Gagal menghapus: ${err.message}`);
     } finally {
       setDeletingId(null);
-      setConfirmId(null); // Tutup overlay konfirmasi
+      setConfirmId(null); 
     }
   };
 
@@ -118,6 +130,24 @@ export default function Gallery() {
     const options = { day: 'numeric', month: 'long', year: 'numeric' };
     return new Date(dateString).toLocaleDateString('id-ID', options);
   };
+
+  // --- LOGIKA FILTER BULAN & TAHUN ---
+  
+  // 1. Ambil daftar "Bulan Tahun" unik dari data yang ada (Misal: "Januari 2024", "Februari 2024")
+  const uniqueMonthsYears = [...new Set(items.map(item => {
+    if (!item.tanggal_kegiatan) return null;
+    const d = new Date(item.tanggal_kegiatan);
+    return `${d.toLocaleDateString('id-ID', { month: 'long' })} ${d.getFullYear()}`;
+  }).filter(Boolean))];
+
+  // 2. Data yang akan dirender (tampil) berdasarkan filter yang dipilih
+  const filteredItems = items.filter(item => {
+    if (selectedFilter === 'All') return true;
+    if (!item.tanggal_kegiatan) return false;
+    const d = new Date(item.tanggal_kegiatan);
+    const itemMonthYear = `${d.toLocaleDateString('id-ID', { month: 'long' })} ${d.getFullYear()}`;
+    return itemMonthYear === selectedFilter;
+  });
 
   return (
     <div className="space-y-6">
@@ -269,9 +299,30 @@ export default function Gallery() {
               </h3>
               <p className="text-sm font-medium text-gray-500">Semua foto yang telah dipublikasikan</p>
             </div>
-            <div className="inline-flex items-center gap-2 bg-[#ADE1FB]/20 border border-[#ADE1FB]/50 px-4 py-2 rounded-full">
-              <FiImage className="text-[#0F2573]" />
-              <span className="text-sm font-bold text-[#0F2573]">{items.length} Total</span>
+            
+            {/* Bagian Filter & Badge Jumlah */}
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FiFilter className="text-[#266CA9]" />
+                </div>
+                <select
+                  value={selectedFilter}
+                  onChange={(e) => setSelectedFilter(e.target.value)}
+                  className="pl-9 pr-10 py-2.5 bg-white border border-[#ADE1FB]/50 hover:border-[#266CA9] rounded-full text-sm font-bold text-[#0F2573] focus:outline-none appearance-none cursor-pointer shadow-sm"
+                  style={{ backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23266CA9' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`, backgroundPosition: 'right 0.5rem center', backgroundRepeat: 'no-repeat', backgroundSize: '1.5em 1.5em' }}
+                >
+                  <option value="All">Semua Waktu</option>
+                  {uniqueMonthsYears.map(my => (
+                    <option key={my} value={my}>{my}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="inline-flex items-center gap-2 bg-[#ADE1FB]/20 border border-[#ADE1FB]/50 px-4 py-2.5 rounded-full">
+                <FiImage className="text-[#0F2573]" />
+                <span className="text-sm font-bold text-[#0F2573]">{filteredItems.length} Total</span>
+              </div>
             </div>
           </div>
 
@@ -281,19 +332,21 @@ export default function Gallery() {
                 <div key={i} className="bg-gray-100 animate-pulse aspect-[4/3] rounded-3xl w-full"></div>
               ))}
             </div>
-          ) : items.length === 0 ? (
+          ) : filteredItems.length === 0 ? (
             <div className="bg-white border-2 border-dashed border-[#ADE1FB] rounded-3xl p-16 text-center flex flex-col items-center justify-center">
               <div className="w-24 h-24 bg-[#ADE1FB]/20 rounded-full flex items-center justify-center mb-5">
                 <FiImage className="text-5xl text-[#266CA9]" />
               </div>
               <p className="text-[#041D56] font-extrabold text-xl mb-2">Belum Ada Koleksi</p>
               <p className="text-gray-500 text-sm max-w-sm leading-relaxed">
-                Ruang galeri Anda masih kosong. Silakan unggah foto pertama Anda melalui form di sebelah kiri.
+                {selectedFilter === 'All' 
+                  ? 'Ruang galeri Anda masih kosong. Silakan unggah foto pertama Anda melalui form di sebelah kiri.'
+                  : `Tidak ada foto yang ditemukan untuk bulan ${selectedFilter}.`}
               </p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {items.map((item) => (
+              {filteredItems.map((item) => (
                 <div 
                   key={item.id} 
                   className="group relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-[0_20px_40px_rgb(4,29,86,0.15)] transition-all duration-500 border border-gray-100 aspect-[9/5]"
@@ -306,7 +359,6 @@ export default function Gallery() {
                   
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#01082D]/90 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   
-                  {/* Tampilkan tombol HANYA JIKA sedang tidak dalam mode konfirmasi hapus */}
                   {confirmId !== item.id && (
                     <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transform -translate-y-4 group-hover:translate-y-0 transition-all duration-300 z-20">
                       <button
@@ -317,7 +369,7 @@ export default function Gallery() {
                         <FiEdit2 className="text-lg" />
                       </button>
                       <button
-                        onClick={() => setConfirmId(item.id)} // <--- Ubah onClick menjadi memunculkan overlay
+                        onClick={() => setConfirmId(item.id)} 
                         className="bg-white/90 backdrop-blur-md text-red-500 hover:text-white p-2.5 rounded-full hover:bg-red-600 hover:scale-110 shadow-lg transition-all"
                         title="Hapus Foto"
                       >
@@ -326,17 +378,18 @@ export default function Gallery() {
                     </div>
                   )}
 
-                  {/* Teks Judul (Sembunyikan saat mode hapus) */}
                   {confirmId !== item.id && (
                     <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-out z-10 flex flex-col justify-end h-full pointer-events-none">
                       <div>
                         {item.tanggal_kegiatan && (
                           <div className="flex items-center gap-1.5 text-[10px] font-bold text-[#000000] uppercase tracking-wider mb-1.5 transform -translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-500 delay-100">
-                            <FiCalendar size={12} />
-                            {formatDate(item.tanggal_kegiatan)}
+                            <div className="bg-white/90 backdrop-blur text-[#266CA9] px-2 py-1 rounded flex items-center gap-1">
+                              <FiCalendar size={12} />
+                              {formatDate(item.tanggal_kegiatan)}
+                            </div>
                           </div>
                         )}
-                        <h4 className="font-extrabold text-white text-xl leading-tight mb-2 drop-shadow-md line-clamp-2">
+                        <h4 className="font-extrabold text-white text-xl leading-tight mb-2 drop-shadow-md line-clamp-2 mt-2">
                           {item.title}
                         </h4>
                         {item.description && (
@@ -348,7 +401,6 @@ export default function Gallery() {
                     </div>
                   )}
 
-                  {/* OVERLAY KONFIRMASI HAPUS (Muncul di tengah card) */}
                   {confirmId === item.id && (
                     <div className="absolute inset-0 z-30 bg-[#01082D]/80 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-white animate-in fade-in duration-300">
                       <FiTrash2 className="text-4xl text-red-400 mb-3" />

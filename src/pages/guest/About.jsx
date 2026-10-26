@@ -21,7 +21,8 @@ export default function About() {
   }, []);
 
   return (
-    <div className="about-page">
+    <div className="about-page" style={{ maxWidth: '1200px', margin: '0 auto', padding: '60px 20px' }}>
+      
       {/* Bagian Hero Tanpa Gambar, Menggunakan Paragraf Pendahuluan */}
       <header className="about-hero">
         <h1 className="hidden-element">Tentang Tim</h1>
