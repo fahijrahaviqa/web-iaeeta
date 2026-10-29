@@ -11,6 +11,7 @@ const Login = React.lazy(() => import("./pages/auth/Login"));
 const ResetPassword = React.lazy(() => import("./pages/auth/Reset"));
 const ForgotPassword = React.lazy(() => import("./pages/auth/Forgot"));
 const Media = React.lazy(() => import("./pages/guest/Media"));
+const ScrollToTop = React.lazy(() => import("./components/ScrollToTop"));
 // IMPORT BARU YANG DITAMBAHKAN:
 const contact = React.lazy(() => import("./pages/guest/Contact"));
 const OurTim = React.lazy(() => import("./pages/guest/OurTim"));
@@ -50,7 +51,9 @@ function AdminLayout() {
 
 export default function App() {
   return (
+    
     <Suspense fallback={<Loading />}>
+      <ScrollToTop />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/reset-password" element={<ResetPassword />} />
