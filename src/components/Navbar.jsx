@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
+// FiMenu sudah dihapus dari import
 import { FiChevronDown, FiMail, FiShield } from 'react-icons/fi';
 import logoIaeeta from "../assets/logo_iaeeta.png";
 import { supabase } from '../supabaseClient'; 
@@ -9,7 +10,6 @@ export default function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [adminEmail, setAdminEmail] = useState('Memuat...');
 
-  // State untuk Foto dan Nama yang terhubung ke localStorage
   const [avatarUrl, setAvatarUrl] = useState(() => {
     return localStorage.getItem('adminAvatar') || 'https://api.dicebear.com/7.x/avataaars/svg?seed=AdminIAEETA';
   });
@@ -18,28 +18,24 @@ export default function Navbar() {
   });
 
   useEffect(() => {
-    // Ambil Email dari Supabase
     const fetchUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) setAdminEmail(user.email);
     };
     fetchUser();
 
-    // Dengarkan "alarm" dari Settings.jsx untuk Avatar
     const syncAvatar = () => {
       const savedAvatar = localStorage.getItem('adminAvatar');
       if (savedAvatar) setAvatarUrl(savedAvatar);
     };
     window.addEventListener('avatarUpdated', syncAvatar);
     
-    // Dengarkan "alarm" dari Settings.jsx untuk Nama
     const syncName = () => {
       const savedName = localStorage.getItem('adminName');
       if (savedName) setAdminName(savedName);
     };
     window.addEventListener('nameUpdated', syncName);
     
-    // Bersihkan listener saat komponen dilepas
     return () => {
       window.removeEventListener('avatarUpdated', syncAvatar);
       window.removeEventListener('nameUpdated', syncName);
@@ -59,17 +55,30 @@ export default function Navbar() {
     return location.pathname.startsWith(menu.path);
   });
 
+  const openMobileMenu = () => {
+    window.dispatchEvent(new Event('openMobileMenu'));
+  };
+
   return (
-    <div className="w-full px-6 pt-4 pb-2">
-      <div className="bg-white rounded-full shadow-[0_2px_10px_-3px_rgba(6,81,237,0.1)] border border-gray-100 px-4 py-2.5 flex items-center justify-between">
+    <div className="w-full px-4 md:px-6 pt-4 pb-2 relative z-40">
+      <div className="bg-white rounded-full shadow-[0_2px_10px_-3px_rgba(6,81,237,0.1)] border border-gray-100 px-3 md:px-4 py-2.5 flex items-center justify-between">
         
-        {/* Bagian Kiri: Logo & Nama Brand */}
-        <div className="flex items-center gap-2 pl-2 cursor-pointer">
-          <img src={logoIaeeta} alt="Logo IAEETA" className="w-8 h-8 rounded-full object-cover" />
-          <span className="text-black font-bold text-lg tracking-tight">IAEETA DPC PEKANBARU</span>
+        {/* Bagian Kiri: Logo & Nama Brand (Dibuat bisa diklik di Mobile) */}
+        <div 
+          onClick={openMobileMenu}
+          className="flex items-center gap-2 pl-1 cursor-pointer active:scale-95 transition-transform duration-200"
+          title="Buka Menu"
+        >
+          {/* Tambahan shrink-0 agar logo tidak gepeng di layar kecil */}
+          <img src={logoIaeeta} alt="Logo IAEETA" className="w-8 h-8 rounded-full object-cover shadow-sm border border-gray-100 shrink-0" />
+          
+          {/* Teks penuh dipertahankan. Ukurannya menyesuaikan layar: HP (text-[13px]), Tablet (text-sm), Desktop (text-lg) */}
+          <span className="text-black font-bold text-[13px] sm:text-sm md:text-lg tracking-tight whitespace-nowrap">
+            IAEETA DPC PEKANBARU
+          </span>
         </div>
 
-        {/* Bagian Tengah: Menu Navigasi */}
+        {/* Bagian Tengah: Menu Navigasi Desktop */}
         <div className="relative hidden md:flex items-center bg-gray-100 rounded-full p-1 border border-gray-200/50">
           {activeIndex !== -1 && (
             <div 
@@ -102,12 +111,12 @@ export default function Navbar() {
           <button 
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             onBlur={() => setTimeout(() => setIsDropdownOpen(false), 200)} 
-            className="flex items-center gap-1.5 bg-white rounded-full p-0.5 hover:bg-gray-50 transition border border-transparent hover:border-gray-200 focus:outline-none"
+            className="flex items-center gap-1 bg-white rounded-full p-0.5 hover:bg-gray-50 transition border border-transparent hover:border-gray-200 focus:outline-none"
           >
             <img 
               src={avatarUrl} 
               alt="Profil Admin" 
-              className="w-8 h-8 rounded-full object-cover border border-gray-200 bg-[#ADE1FB]/30"
+              className="w-8 h-8 rounded-full object-cover border border-gray-200 bg-[#ADE1FB]/30 shrink-0"
             />
             <FiChevronDown className={`text-gray-400 text-sm mr-1 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
           </button>
@@ -124,7 +133,6 @@ export default function Navbar() {
                   />
                 </div>
                 
-                {/* Gunakan state adminName di sini */}
                 <h4 className="font-extrabold text-[#01082D] text-[15px] truncate w-full px-2">{adminName}</h4>
                 <div className="flex items-center justify-center gap-1 mt-1 mb-4 bg-[#ADE1FB]/20 px-2.5 py-0.5 rounded-full">
                   <FiShield className="text-[#266CA9] text-[10px]" />
