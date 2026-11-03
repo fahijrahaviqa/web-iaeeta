@@ -1,18 +1,20 @@
-/* Pengaturan Dasar */
+/* ==========================================
+   PENGATURAN DASAR
+   ========================================== */
 .about-page {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    /* 1. Gradient sekarang diterapkan ke seluruh halaman dari atas ke bawah */
     background: linear-gradient(to bottom, #01082D, #041D56, #01082D);
-    color: #e2e8f0; 
+    color: #e2e8f0;
     line-height: 1.8;
     min-height: 100vh;
 }
 
-/* Bagian Hero */
+/* ==========================================
+   BAGIAN HERO
+   ========================================== */
 .about-hero {
-    /* 2. Background di hero dihapus agar menyatu sempurna dengan background halaman */
-    background: transparent; 
-    color: #ADE1FB; 
+    background: transparent;
+    color: #ADE1FB;
     text-align: center;
     padding: 120px 20px 80px 20px;
     display: flex;
@@ -21,138 +23,83 @@
     justify-content: center;
 }
 
-.about-hero h1 {
-    font-size: 3.5rem;
-    margin-bottom: 20px;
-    font-weight: bold;
-}
+.about-hero h1 { font-size: 3.5rem; margin-bottom: 20px; font-weight: bold; }
+.about-hero p { font-size: 1.25rem; color: #d1d5db; max-width: 900px; margin: 0 auto; line-height: 1.7; }
 
-.about-hero p {
-    font-size: 1.25rem;
-    color: #d1d5db; 
-    max-width: 900px;
-    margin: 0 auto;
-    line-height: 1.7;
-}
-
-/* Efek Scroll pada Konten */
+/* ==========================================
+   BAGIAN DEDIKASI & TANGGUNG JAWAB (LAYOUT GRID NORMAL)
+   ========================================== */
 .scroll-container {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
     max-width: 1200px;
     margin: 40px auto 80px auto;
     padding: 0 20px;
     gap: 50px;
 }
 
-.sticky-sidebar {
-    flex: 1;
-}
-
-.sticky-sidebar h2 {
+.sidebar-title h2 {
+    margin: 0;
     font-size: 2.5rem;
     color: #ADE1FB;
-    position: sticky;
-    top: 100px; 
     line-height: 1.3;
 }
 
 .scroll-content {
-    flex: 2;
+    min-width: 0;
     font-size: 1.1rem;
 }
 
-/* Desain Kotak Paragraf */
+/* ==========================================
+   DESAIN KOTAK PARAGRAF & ANIMASI FOKUS
+   ========================================== */
 .scroll-content p {
-    margin-bottom: 25px;
-    /* 3. Memberikan warna semi-transparan agar efek gradient dari belakang terlihat */
-    background: rgba(4, 29, 86, 0.5); 
-    backdrop-filter: blur(10px); /* Efek kaca modern */
+    margin: 0 0 25px 0;
+    background: rgba(4, 29, 86, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     padding: 30px;
     border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    border: 1px solid rgba(38, 108, 169, 0.3);
-    color: #d1d5db;
+    border: 1px solid rgba(38, 108, 169, 0.1);
+    color: #94a3b8; 
+    transition: all 0.5s ease; 
+    transform: scale(0.98);
 }
 
-.scroll-content p strong {
-    color: #ADE1FB; 
-    display: block;
-    margin-bottom: 8px;
-    font-size: 1.2rem;
+.scroll-content p:last-child { margin-bottom: 0; }
+.scroll-content p strong { color: #7ab8db; display: block; margin-bottom: 8px; font-size: 1.2rem; transition: color 0.5s ease; }
+
+.scroll-content p.active-paragraph {
+    background: rgba(4, 29, 86, 0.7);
+    color: #e2e8f0; 
+    transform: scale(1);
+    border: 1px solid rgba(38, 108, 169, 0.6);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 20px rgba(38, 108, 169, 0.2);
 }
 
-/* Bagian Grid (Nilai Utama) */
-.grid-section {
-    max-width: 1200px;
-    margin: 100px auto;
-    padding: 0 20px;
-    text-align: center;
-}
+.scroll-content p.active-paragraph strong { color: #ADE1FB; }
 
-.grid-section h2 {
-    font-size: 2.5rem;
-    color: #ADE1FB;
-    margin-bottom: 50px;
-}
+/* ==========================================
+   BAGIAN GRID: NILAI INTI OPERASIONAL (STATIS / DIAM)
+   ========================================== */
+.grid-section { max-width: 1200px; margin: 100px auto; padding: 0 20px; text-align: center; }
+.grid-section h2 { font-size: 2.5rem; color: #ADE1FB; margin-bottom: 50px; }
+.grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
 
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-}
-
-/* Desain Kotak Grid */
 .grid-item {
-    /* Sama seperti paragraf, diberi efek transparan elegan */
-    background: rgba(4, 29, 86, 0.5); 
-    backdrop-filter: blur(10px);
+    background: rgba(4, 29, 86, 0.5);
     padding: 40px 30px;
     border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
     border: 1px solid rgba(38, 108, 169, 0.3);
     text-align: left;
 }
 
-.grid-item:hover {
-    transform: translateY(-10px);
-    border-color: #266CA9; 
-    background: rgba(4, 29, 86, 0.8); /* Sedikit lebih gelap saat di-hover */
-}
+.grid-item h3 { color: #266CA9; margin-bottom: 15px; font-size: 1.5rem; font-weight: bold; }
+.grid-item p { color: #d1d5db; font-size: 0.95rem; margin: 0; }
 
-.grid-item h3 {
-    color: #266CA9; 
-    margin-bottom: 15px;
-    font-size: 1.5rem;
-    font-weight: bold;
-}
-
-.grid-item p {
-    color: #d1d5db;
-    font-size: 0.95rem;
-}
-
-/* Responsivitas */
-@media (max-width: 768px) {
-    .scroll-container {
-        flex-direction: column;
-        gap: 30px;
-    }
-    .sticky-sidebar h2 {
-        position: relative;
-        top: 0;
-        margin-bottom: 10px;
-    }
-    .about-hero {
-        padding: 100px 20px 60px 20px;
-    }
-    .about-hero h1 {
-        font-size: 2.5rem;
-    }
-}
 
 /* ==========================================
-   CLASS ANIMASI INTERSECT OBSERVER
+   ANIMASI KEMUNCULAN SAAT SCROLL (FADE IN UP)
    ========================================== */
 .hidden-element {
     opacity: 0;
@@ -161,13 +108,41 @@
     transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
 }
 
-.show-element {
-    opacity: 1;
-    filter: blur(0);
-    transform: translateY(0);
-}
-
+.show-element { opacity: 1; filter: blur(0); transform: translateY(0); }
 .delay-100 { transition-delay: 100ms; }
 .delay-200 { transition-delay: 200ms; }
 .delay-300 { transition-delay: 300ms; }
-.delay-400 { transition-delay: 400ms; }
+
+/* Animasi mengambang untuk judul Hero */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+.about-hero h1.show-element { animation: float 4s ease-in-out infinite; }
+
+
+/* ==========================================
+   RESPONSIVITAS TABLET DAN MOBILE
+   ========================================== */
+@media (max-width: 768px) {
+    .about-hero { padding: 100px 20px 60px 20px; }
+    .about-hero h1 { font-size: 2.5rem; }
+    .about-hero p { font-size: 1.05rem; }
+
+    .scroll-container { grid-template-columns: 1fr; gap: 30px; margin: 30px auto 60px auto; }
+
+    .sidebar-title h2 { margin-bottom: 10px; font-size: 2rem; }
+
+    .scroll-content { font-size: 1rem; }
+    .scroll-content p {
+        padding: 24px; opacity: 1 !important; transform: scale(1) !important;
+        background: rgba(4, 29, 86, 0.5); color: #e2e8f0;
+    }
+    .scroll-content p.active-paragraph { box-shadow: none; border: 1px solid rgba(38, 108, 169, 0.3); }
+
+    .grid-section { margin: 60px auto; }
+    .grid-section h2 { font-size: 2rem; margin-bottom: 30px; }
+    .grid-container { grid-template-columns: 1fr; gap: 20px; }
+    .grid-item { padding: 30px 24px; }
+}

@@ -1,29 +1,46 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../../assets/About.css'; 
+import ScrollToTopButton from '../../components/ScrollToTopButton';
 
 export default function About() {
-  // Logika Animasi Scroll
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
   useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
+    // Observer untuk efek fade-in (muncul perlahan)
+    const appearObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add('show-element');
         }
       });
-    });
+    }, { threshold: 0.1 });
 
     const hiddenElements = document.querySelectorAll('.hidden-element');
-    hiddenElements.forEach((el) => observer.observe(el));
+    hiddenElements.forEach((el) => appearObserver.observe(el));
+
+    // Observer untuk efek paragraf menyala saat dibaca
+    const focusObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active-paragraph');
+        } else {
+          entry.target.classList.remove('active-paragraph');
+        }
+      });
+    }, { rootMargin: '-30% 0px -40% 0px' }); 
+
+    const paragraphs = document.querySelectorAll('.scroll-content p');
+    paragraphs.forEach((p) => focusObserver.observe(p));
 
     return () => {
-      hiddenElements.forEach((el) => observer.unobserve(el));
+      hiddenElements.forEach((el) => appearObserver.unobserve(el));
+      paragraphs.forEach((p) => focusObserver.unobserve(p));
     };
   }, []);
 
   return (
-    <div className="about-page" style={{ maxWidth: '1200px', margin: '0 auto', padding: '60px 20px' }}>
+    <div className="about-page" style={{ maxWidth: '1200px', margin: '0 auto', padding: '60px 20px', position: 'relative' }}>
       
-      {/* Bagian Hero Tanpa Gambar, Menggunakan Paragraf Pendahuluan */}
       <header className="about-hero">
         <h1 className="hidden-element">Tentang Tim</h1>
         <p className="hidden-element delay-100">
@@ -31,9 +48,10 @@ export default function About() {
         </p>
       </header>
 
-      {/* Bagian Konten dengan Efek Scroll */}
       <section className="scroll-container">
-        <div className="sticky-sidebar">
+        
+        {/* KOLOM KIRI (Judul Normal, Ada Animasi Fade-In) */}
+        <div className="sidebar-title">
           <h2 className="hidden-element">Dedikasi & <br />Tanggung Jawab</h2>
         </div>
         <div className="scroll-content">
@@ -52,36 +70,29 @@ export default function About() {
         </div>
       </section>
 
-      {/* Bagian Grid untuk Hal-hal Penting */}
+      {/* BAGIAN GRID (Statis / Diam) */}
       <section className="grid-section">
         <h2 className="hidden-element">Nilai Inti Operasional Kami</h2>
         <div className="grid-container">
-          <div className="grid-item hidden-element delay-100">
+          <div className="grid-item">
             <h3>Safety First</h3>
-            <p>
-              Keselamatan penerbangan adalah fondasi utama. Kami memegang prinsip <i>Zero Tolerance for Error</i> dalam setiap tindakan pemeliharaan peralatan teknis.
-            </p>
+            <p>Keselamatan penerbangan adalah fondasi utama. Kami memegang prinsip <i>Zero Tolerance for Error</i>.</p>
           </div>
-          <div className="grid-item hidden-element delay-200">
+          <div className="grid-item">
             <h3>Keandalan (Reliability)</h3>
-            <p>
-              Memastikan seluruh sistem komunikasi, navigasi, dan surveilans (CNS) beroperasi optimal dengan target <i>uptime</i> sistem di atas 99.9% setiap tahunnya.
-            </p>
+            <p>Memastikan seluruh sistem komunikasi, navigasi, dan surveilans (CNS) beroperasi optimal dengan target <i>uptime</i> di atas 99.9%.</p>
           </div>
-          <div className="grid-item hidden-element delay-300">
+          <div className="grid-item">
             <h3>Profesionalisme</h3>
-            <p>
-              Digerakkan oleh teknisi bersertifikasi yang terus menjalani pelatihan dan *rating* secara berkala untuk menjaga kompetensi di tingkat standar penerbangan internasional (ICAO).
-            </p>
+            <p>Digerakkan oleh teknisi bersertifikasi yang terus menjalani pelatihan dan *rating* standar ICAO.</p>
           </div>
-          <div className="grid-item hidden-element delay-400">
+          <div className="grid-item">
             <h3>Respons Cepat</h3>
-            <p>
-              Kesiapsiagaan penuh 24/7. Tim kami dilatih untuk mendeteksi anomali peralatan dan melakukan <i>troubleshooting</i> dengan cepat guna meminimalisir dampak pada lalu lintas udara.
-            </p>
+            <p>Kesiapsiagaan penuh 24/7. Tim kami dilatih untuk mendeteksi anomali dengan cepat.</p>
           </div>
         </div>
       </section>
+      <ScrollToTopButton />
     </div>
   );
 }

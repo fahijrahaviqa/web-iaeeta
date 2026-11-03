@@ -3,6 +3,7 @@ import emailjs from '@emailjs/browser';
 import '../../assets/About.css'; 
 import '../../assets/Contact.css'; 
 import { FiSend, FiCheckCircle, FiAlertCircle } from 'react-icons/fi';
+import ScrollToTopButton from '../../components/ScrollToTopButton';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -35,17 +36,15 @@ export default function Contact() {
     setStatus({ type: '', text: '' });
 
     try {
-      // Masukkan ID dari EmailJS Anda di sini:
       const serviceID = 'service_6lb97nj';
       const templateID = 'template_m23kr9u';
       const publicKey = 'BFst2tYd8Z_Mgd0Sg';
 
-      // Pastikan nama properti di sini SAMA PERSIS dengan variabel {{...}} di Template EmailJS
       const templateParams = {
-        from_name: formData.name,   // Menyambungkan ke {{from_name}} di template
-        from_email: formData.email, // Menyambungkan ke {{from_email}} di template
-        subject: formData.subject,  // Menyambungkan ke {{subject}} di template
-        message: formData.message,  // Menyambungkan ke {{message}} di template
+        from_name: formData.name,   
+        from_email: formData.email, 
+        subject: formData.subject,  
+        message: formData.message,  
         to_email: 'viqa004@gmail.com'
       };
 
@@ -69,16 +68,19 @@ export default function Contact() {
   };
 
   return (
-    <div className="about-page">
-      <header className="about-hero">
-        <h1 className="hidden-element">Hubungi Kami</h1>
-        <p className="hidden-element delay-100">
-          Pusat layanan informasi dan koordinasi operasional Tim Teknik CNS. Kami siap merespon kebutuhan Anda 24/7.
-        </p>
+    // Menggunakan flex-col dan justify-center untuk menempatkan semua konten tepat di tengah layar laptop
+    <div className="about-page flex flex-col items-center justify-center min-h-[calc(100vh-80px)] py-8 px-4"> 
+      
+      {/* KUNCI PERBAIKAN: class about-hero dikembalikan agar animasi float jalan, tapi padding-nya ditimpa jadi 0 */}
+      <header className="about-hero w-full text-center mb-6 flex-shrink-0" style={{ padding: '10px 0 0 0' }}>
+        <h1 className="text-4xl md:text-[3.5rem] font-bold text-[#ADE1FB] hidden-element">
+          Hubungi Kami
+        </h1>
       </header>
 
-      <section className="contact-section">
-        <div className="contact-unified-card hidden-element delay-100">
+      {/* Memastikan form card tidak melebar berlebihan dan selaras dengan judul */}
+      <section className="contact-section w-full flex justify-center flex-grow-0">
+        <div className="contact-unified-card hidden-element delay-100 w-full max-w-5xl">
           
           <div className="contact-info-side">
             <h2>Pusat Koordinasi</h2>
@@ -115,7 +117,7 @@ export default function Contact() {
             <h2 className="form-title">Kirim Laporan / Pesan</h2>
             
             {status.text && (
-              <div className={`mb-6 p-4 rounded-2xl flex items-start gap-3 text-sm font-medium border ${
+              <div className={`mb-4 p-4 rounded-2xl flex items-start gap-3 text-sm font-medium border ${
                 status.type === 'error' 
                   ? 'bg-red-50 text-red-600 border-red-200' 
                   : 'bg-emerald-50 text-emerald-700 border-emerald-200'
@@ -172,7 +174,7 @@ export default function Contact() {
               <div className="form-group">
                 <textarea 
                   id="message" 
-                  rows="4" 
+                  rows="3" 
                   value={formData.message}
                   onChange={handleChange}
                   className="modern-input" 
@@ -201,6 +203,7 @@ export default function Contact() {
 
         </div>
       </section>
+      <ScrollToTopButton />
     </div>
   );
 }

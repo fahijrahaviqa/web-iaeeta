@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../../assets/About.css';  
 import '../../assets/Media.css';  
 import { supabase } from '../../supabaseClient'; 
+import ScrollToTopButton from '../../components/ScrollToTopButton';
 
 export default function Media() {
   const [newsItems, setNewsItems] = useState([]);
@@ -126,6 +127,7 @@ export default function Media() {
           </div>
         )}
       </section>
+      <ScrollToTopButton />
 
       {/* ================= HALAMAN MENGAMBANG (MODAL DETAIL) DENGAN ANIMASI ================= */}
       {selectedArticle && (

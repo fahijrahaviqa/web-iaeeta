@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react"; 
 import "../assets/Hero.css";
-import logoIaeeta from "../assets/logo_iaeeta.png"; // Import logo IAEETA
+import logoIaeeta from "../assets/logo_iaeeta.png"; 
 import About from "../pages/guest/About";
 import OurTim from "../pages/guest/OurTim";
 import Contact from "../pages/guest/Contact";
 import Media from "../pages/guest/Media";
+import ScrollToTopButton from './ScrollToTopButton'; 
 
 export default function HeroSection() {
-  const [showScrollTop, setShowScrollTop] = useState(false);
-
+  
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -25,26 +25,6 @@ export default function HeroSection() {
       hiddenElements.forEach((el) => observer.unobserve(el));
     };
   }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 300) {
-        setShowScrollTop(true);
-      } else {
-        setShowScrollTop(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  };
 
   const scrollToMedia = () => {
     const mediaSection = document.getElementById('media-publikasi');
@@ -103,35 +83,8 @@ export default function HeroSection() {
           <Contact />
         </section>
       </div>
-
-      {/* ================= TOMBOL PANAH KE ATAS ================= */}
-      {showScrollTop && (
-        <button 
-          onClick={scrollToTop} 
-          style={{
-            position: 'fixed',
-            bottom: '20px', // Disesuaikan agar lebih rapi di pojok
-            right: '20px',
-            zIndex: 999,
-            backgroundColor: '#0056b3', 
-            color: 'white',
-            border: 'none',
-            borderRadius: '50%',
-            width: '40px',  // Layout tombol diperkecil
-            height: '40px', // Layout tombol diperkecil
-            fontSize: '20px', // Ukuran teks/ikon diperkecil
-            cursor: 'pointer',
-            boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.3)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            transition: 'background-color 0.3s ease'
-          }}
-          aria-label="Scroll to top"
-        >
-          ↑
-        </button>
-      )}
+      
+      <ScrollToTopButton />
 
     </div>
   );

@@ -3,6 +3,7 @@ import '../../assets/About.css';
 import '../../assets/OurTim.css'; 
 import { supabase } from '../../supabaseClient'; 
 import { FiUser } from 'react-icons/fi'; // Import icon fallback jika foto kosong
+import ScrollToTopButton from '../../components/ScrollToTopButton';
 
 // Komponen Kartu Profil (Adaptasi Desain Admin - Tanpa Tombol Edit/Hapus & Warna Lebih Muda)
 const OrgCard = ({ member }) => {
@@ -210,6 +211,7 @@ export default function OurTim() {
         )}
 
       </section>
+      <ScrollToTopButton />
     </div>
   );
 }
