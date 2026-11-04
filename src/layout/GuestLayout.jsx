@@ -40,7 +40,7 @@ export default function GuestLayout() {
     <div className="min-h-screen bg-[#01082D] text-white w-full flex flex-col">
 
       {/* PERBAIKAN 2: Pastikan 'lg:sticky' dan 'lg:top-0' aktif, serta z-index diatur tinggi */}
-      <header className="relative lg:sticky lg:top-0 z-[999] bg-[#01082D]/80 backdrop-blur-lg px-4 md:px-8 py-4 border-b border-[#0F2573]/60 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)] transition-all duration-300">
+      <header className="sticky top-0 z-[999] bg-[#01082D]/80 backdrop-blur-lg px-4 md:px-8 py-4 border-b border-[#0F2573]/60 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)] transition-all duration-300">
         
         <div className="flex justify-between items-center w-full">
           
