@@ -29,7 +29,6 @@ export default function Team() {
   const [currentImageUrl, setCurrentImageUrl] = useState('');
   const [saving, setSaving] = useState(false);
   
-  // State untuk menyimpan index posisi penyisipan
   const [insertAfterIndex, setInsertAfterIndex] = useState(null);
 
   // State Crop Foto
@@ -67,7 +66,6 @@ export default function Team() {
     setCurrentImageUrl('');
     setTempImageSrc(null);
 
-    // Cari index profil yang diklik agar data baru berada tepat di bawahnya
     if (afterMemberId) {
       const idx = members.findIndex(m => m.id === afterMemberId);
       setInsertAfterIndex(idx);
@@ -140,10 +138,8 @@ export default function Team() {
       if (editId) {
         await updateTeamMember(editId, payload);
       } else {
-        // Tambah ke Supabase
         const newMember = await addTeamMember(payload);
         
-        // Sisipkan posisi di state lokal agar berada tepat di bawah profil yang diklik
         if (newMember && insertAfterIndex !== null) {
           const updated = [...members];
           updated.splice(insertAfterIndex + 1, 0, newMember);
@@ -173,7 +169,6 @@ export default function Team() {
     }
   };
 
-  // --- LOGIKA FILTER JABATAN (PERSIS KODE HALAMAN DEPAN) ---
   const ketua = members.filter(m => (m.jabatan || '').toLowerCase().includes('ketua') && !(m.jabatan || '').toLowerCase().includes('wakil'));
   const sekretaris = members.filter(m => (m.jabatan || '').toLowerCase().includes('sekretaris'));
   const bendahara = members.filter(m => (m.jabatan || '').toLowerCase().includes('bendahara'));
@@ -191,7 +186,6 @@ export default function Team() {
   ].map(m => m.id));
   const unassigned = members.filter(m => !assignedIds.has(m.id));
 
-  // Render Stack Bertumpuk (Garis Menyambung Pas di Bawahnya)
   const renderStack = (memberList, defaultJabatan = '') => {
     return (
       <div className="flex flex-col items-center">
@@ -216,53 +210,63 @@ export default function Team() {
   };
 
   return (
-    <div className="space-y-8">
-      <PageHeader title="Struktur Anggota Tim" breadcrumb={["Admin", "Tim Kami"]}>
-        <div className="flex flex-wrap items-center gap-4 mt-4 sm:mt-0">
-          <div className="flex items-center bg-[#ADE1FB]/20 p-1 rounded-2xl border border-[#ADE1FB]/40">
-            <button
-              onClick={() => setViewMode('grid')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                viewMode === 'grid' 
-                  ? 'bg-[#266CA9] text-white shadow-md' 
-                  : 'text-[#041D56] hover:bg-white/50'
-              }`}
-            >
-              <FiGrid size={16} /> Grid
-            </button>
-            <button
-              onClick={() => setViewMode('tree')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                viewMode === 'tree' 
-                  ? 'bg-[#266CA9] text-white shadow-md' 
-                  : 'text-[#041D56] hover:bg-white/50'
-              }`}
-            >
-              <FiGitMerge size={16} /> Diagram Alur
-            </button>
-          </div>
+    <div className="space-y-6 md:space-y-8">
+      
+      {/* 
+        JUDUL & KONTROL TERPISAH: 
+        Judul "Struktur Anggota Tim" kembali menggunakan PageHeader standar (akan hilang saat di-scroll).
+      */}
+      <PageHeader title="Struktur Anggota Tim" breadcrumb={["Admin", "Tim Kami"]} />
 
-          <div className="inline-flex items-center gap-3 bg-white border border-[#ADE1FB]/50 px-5 py-2.5 rounded-2xl shadow-sm">
-            <div className="relative flex h-3 w-3">
+      {/* Baris Kontrol (Grid/Tree, Total Personel, & Tombol Tambah) di bawah judul */}
+      <div className="flex flex-wrap items-center justify-between gap-4 bg-white p-4 rounded-3xl border border-[#ADE1FB]/30 shadow-sm">
+        
+        <div className="flex items-center bg-[#ADE1FB]/20 p-1 rounded-2xl border border-[#ADE1FB]/40">
+          <button
+            onClick={() => setViewMode('grid')}
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+              viewMode === 'grid' 
+                ? 'bg-[#266CA9] text-white shadow-md' 
+                : 'text-[#041D56] hover:bg-white/50'
+            }`}
+          >
+            <FiGrid size={16} /> Grid
+          </button>
+          <button
+            onClick={() => setViewMode('tree')}
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+              viewMode === 'tree' 
+                ? 'bg-[#266CA9] text-white shadow-md' 
+                : 'text-[#041D56] hover:bg-white/50'
+            }`}
+          >
+            <FiGitMerge size={16} /> Tree
+          </button>
+        </div>
+
+        <div className="flex items-center gap-4">
+          <div className="inline-flex items-center gap-2 bg-[#ADE1FB]/10 border border-[#ADE1FB]/40 px-4 py-2 rounded-2xl">
+            <div className="relative flex h-2.5 w-2.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#266CA9] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-[#0F2573]"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#0F2573]"></span>
             </div>
-            <span className="text-sm font-extrabold text-[#041D56]">
+            <span className="text-xs md:text-sm font-extrabold text-[#041D56]">
               <span className="text-[#266CA9] mr-1">{members.length}</span> Personel
             </span>
           </div>
 
           <button
             onClick={() => handleOpenAddModal()}
-            className="group relative overflow-hidden bg-gradient-to-r from-[#266CA9] to-[#266CA9] text-white font-bold text-sm px-6 py-3 rounded-2xl transition-all shadow-lg hover:shadow-[#0F2573]/30 hover:-translate-y-1 flex items-center gap-2"
+            className="group relative overflow-hidden bg-gradient-to-r from-[#266CA9] to-[#0F2573] text-white font-bold text-xs md:text-sm px-5 py-2.5 rounded-2xl transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 flex items-center gap-2"
           >
-            <FiUserPlus className="text-lg relative z-10" />
+            <FiUserPlus className="text-base relative z-10" />
             <span className="relative z-10">Tambah Anggota</span>
           </button>
         </div>
-      </PageHeader>
 
-      <div className="w-full">
+      </div>
+
+      <div className="w-full relative z-10">
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {[1, 2, 3, 4].map((i) => (
@@ -279,23 +283,23 @@ export default function Team() {
             ))}
           </div>
         ) : members.length === 0 ? (
-          <div className="relative bg-white rounded-[2rem] border-2 border-dashed border-[#ADE1FB] p-20 text-center flex flex-col items-center justify-center overflow-hidden group">
-            <div className="relative w-28 h-28 bg-[#ADE1FB]/20 rounded-full flex items-center justify-center mb-6 shadow-inner">
-              <FiUserPlus className="text-6xl text-[#266CA9]" />
+          <div className="relative bg-white rounded-[2rem] border-2 border-dashed border-[#ADE1FB] p-10 md:p-20 text-center flex flex-col items-center justify-center overflow-hidden group">
+            <div className="relative w-20 h-20 md:w-28 md:h-28 bg-[#ADE1FB]/20 rounded-full flex items-center justify-center mb-6 shadow-inner">
+              <FiUserPlus className="text-4xl md:text-6xl text-[#266CA9]" />
             </div>
-            <h3 className="text-[#041D56] font-black text-2xl mb-2 relative z-10">Tim Masih Kosong</h3>
-            <p className="text-[#266CA9] max-w-md leading-relaxed mb-8 relative z-10">
+            <h3 className="text-[#041D56] font-black text-xl md:text-2xl mb-2 relative z-10">Tim Masih Kosong</h3>
+            <p className="text-[#266CA9] max-w-md text-sm md:text-base leading-relaxed mb-8 relative z-10 px-4">
               Belum ada data anggota yang terdaftar. Tambahkan anggota pertama untuk mulai membangun struktur organisasi Anda.
             </p>
             <button
               onClick={() => handleOpenAddModal()}
-              className="bg-[#266CA9] hover:bg-[#041D56] text-white font-bold px-8 py-3.5 rounded-full transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1 relative z-10 flex items-center gap-3"
+              className="bg-[#266CA9] hover:bg-[#041D56] text-white font-bold px-6 py-3 md:px-8 md:py-3.5 rounded-full transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1 relative z-10 flex items-center gap-2 md:gap-3 text-sm md:text-base"
             >
-              <FiUserPlus size={20} /> Daftarkan Anggota
+              <FiUserPlus size={18} /> Daftarkan Anggota
             </button>
           </div>
         ) : viewMode === 'grid' ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
             {members.map((member) => (
               <MemberCard 
                 key={member.id} 
@@ -311,29 +315,22 @@ export default function Team() {
             ))}
           </div>
         ) : (
-          /* DIAGRAM ALUR SEPERTI KODE HALAMAN DEPAN */
-          <div className="bg-white rounded-[2rem] border border-[#ADE1FB]/30 p-8 shadow-sm overflow-x-auto min-w-[950px]">
+          <div className="bg-white rounded-[2rem] border border-[#ADE1FB]/30 p-4 md:p-8 shadow-sm overflow-x-auto min-w-[300px] md:min-w-[950px]">
             <div className="flex flex-col items-center min-w-[950px]">
               
-              {/* === LEVEL 1: KETUA === */}
               {renderStack(ketua, 'Ketua')}
-
               {ketua.length > 0 && <div className="w-[2px] h-[25px] bg-gray-400"></div>}
 
-              {/* === LEVEL 2: SEKRETARIS & BENDAHARA === */}
               <div className="relative flex w-full max-w-[600px]">
                 <div className="absolute top-0 left-[25%] right-[25%] h-[2px] bg-gray-400"></div>
 
-                {/* Sekretaris */}
                 <div className="flex-1 flex flex-col items-center">
                   <div className="w-[2px] h-[20px] bg-gray-400"></div>
                   {renderStack(sekretaris, 'Sekretaris')}
                 </div>
 
-                {/* Garis Utama Tengah */}
                 <div className="absolute left-1/2 top-0 -bottom-[30px] w-[2px] bg-gray-400 -translate-x-1/2"></div>
 
-                {/* Bendahara */}
                 <div className="flex-1 flex flex-col items-center">
                   <div className="w-[2px] h-[20px] bg-gray-400"></div>
                   {renderStack(bendahara, 'Bendahara')}
@@ -342,11 +339,9 @@ export default function Team() {
 
               <div className="h-[30px]"></div>
 
-              {/* === LEVEL 3: WAKIL KETUA I, II, III & ANGGOTA === */}
               <div className="relative flex w-full">
                 <div className="absolute top-0 left-[16.66%] right-[16.66%] h-[2px] bg-gray-400"></div>
 
-                {/* Kolom 1: Waka I & Anggota Organisasi */}
                 <div className="flex-1 flex flex-col items-center">
                   <div className="w-[2px] h-[20px] bg-gray-400"></div>
                   {renderStack(waka1, 'Wakil Ketua I')}
@@ -354,7 +349,6 @@ export default function Team() {
                   {renderStack(anggota1, 'Anggota Bidang Organisasi dan Keanggotaan')}
                 </div>
 
-                {/* Kolom 2: Waka II & Anggota Hukum/Kemitraan */}
                 <div className="flex-1 flex flex-col items-center">
                   <div className="w-[2px] h-[20px] bg-gray-400"></div>
                   {renderStack(waka2, 'Wakil Ketua II')}
@@ -362,7 +356,6 @@ export default function Team() {
                   {renderStack(anggota2, 'Anggota Bidang Hukum, Kemitraan, dan Komunikasi')}
                 </div>
 
-                {/* Kolom 3: Waka III & Anggota SDM */}
                 <div className="flex-1 flex flex-col items-center">
                   <div className="w-[2px] h-[20px] bg-gray-400"></div>
                   {renderStack(waka3, 'Wakil Ketua III')}
@@ -400,31 +393,31 @@ export default function Team() {
 
       {/* Modal Form Edit / Tambah */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 sm:p-6">
           <div className="absolute inset-0 bg-[#01082D]/70 backdrop-blur-md" onClick={() => !saving && setShowModal(false)}></div>
           
           <div className="relative bg-white rounded-[2rem] shadow-2xl w-full max-w-lg overflow-hidden animate-in zoom-in-95 duration-300 z-10">
-            <div className="bg-gradient-to-r from-[#266CA9] to-[#266CA9] px-8 py-6 flex justify-between items-center relative">
+            <div className="bg-gradient-to-r from-[#266CA9] to-[#266CA9] px-6 py-5 md:px-8 md:py-6 flex justify-between items-center relative">
               <div>
-                <h3 className="font-black text-2xl text-white relative z-10 tracking-tight">
+                <h3 className="font-black text-xl md:text-2xl text-white relative z-10 tracking-tight">
                   {editId ? 'Perbarui Profil' : 'Anggota Baru'}
                 </h3>
-                <p className="text-[#ADE1FB] text-xs font-medium mt-1 relative z-10">Lengkapi informasi profil di bawah ini</p>
+                <p className="text-[#ADE1FB] text-[10px] md:text-xs font-medium mt-0.5 relative z-10">Lengkapi informasi profil di bawah ini</p>
               </div>
               <button
                 onClick={() => setShowModal(false)}
-                className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors relative z-10"
+                className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors relative z-10"
               >
-                <FiX size={20} />
+                <FiX size={18} />
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-8 space-y-6">
-              <div className="space-y-5">
+            <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-5 md:space-y-6">
+              <div className="space-y-4 md:space-y-5">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-[#041D56] uppercase tracking-wider pl-1">Nama Lengkap</label>
+                  <label className="text-[10px] md:text-xs font-bold text-[#041D56] uppercase tracking-wider pl-1">Nama Lengkap</label>
                   <div className="relative group">
-                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                       <FiUser className="text-[#266CA9]" />
                     </div>
                     <input
@@ -432,16 +425,16 @@ export default function Team() {
                       value={nama}
                       onChange={(e) => setNama(e.target.value)}
                       placeholder="Cth: Budi Santoso"
-                      className="w-full pl-11 pr-4 py-3.5 bg-[#ADE1FB]/5 border-2 border-[#ADE1FB]/50 rounded-2xl text-sm focus:outline-none focus:border-[#0F2573] text-[#01082D] font-medium"
+                      className="w-full pl-10 pr-4 py-3 md:py-3.5 bg-[#ADE1FB]/5 border-2 border-[#ADE1FB]/50 rounded-2xl text-xs md:text-sm focus:outline-none focus:border-[#0F2573] text-[#01082D] font-medium"
                       required
                     />
                   </div>
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-[#041D56] uppercase tracking-wider pl-1">Jabatan</label>
+                  <label className="text-[10px] md:text-xs font-bold text-[#041D56] uppercase tracking-wider pl-1">Jabatan</label>
                   <div className="relative group">
-                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                       <FiBriefcase className="text-[#266CA9]" />
                     </div>
                     <input
@@ -449,15 +442,15 @@ export default function Team() {
                       value={jabatan}
                       onChange={(e) => setJabatan(e.target.value)}
                       placeholder="Cth: Sekretaris II"
-                      className="w-full pl-11 pr-4 py-3.5 bg-[#ADE1FB]/5 border-2 border-[#ADE1FB]/50 rounded-2xl text-sm focus:outline-none focus:border-[#0F2573] text-[#01082D] font-medium"
+                      className="w-full pl-10 pr-4 py-3 md:py-3.5 bg-[#ADE1FB]/5 border-2 border-[#ADE1FB]/50 rounded-2xl text-xs md:text-sm focus:outline-none focus:border-[#0F2573] text-[#01082D] font-medium"
                       required
                     />
                   </div>
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-[#041D56] uppercase tracking-wider pl-1">Foto Profil</label>
-                  <div className="flex items-center gap-4 p-4 bg-[#ADE1FB]/10 border-2 border-[#ADE1FB]/50 rounded-2xl border-dashed">
+                  <label className="text-[10px] md:text-xs font-bold text-[#041D56] uppercase tracking-wider pl-1">Foto Profil</label>
+                  <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 p-4 bg-[#ADE1FB]/10 border-2 border-[#ADE1FB]/50 rounded-2xl border-dashed">
                     <div className="relative w-16 h-16 rounded-full bg-white shadow-sm overflow-hidden shrink-0 flex items-center justify-center border-2 border-[#266CA9]">
                       {imageFile ? (
                         <img src={URL.createObjectURL(imageFile)} alt="New" className="w-full h-full object-cover" />
@@ -468,9 +461,9 @@ export default function Team() {
                       )}
                     </div>
 
-                    <div className="flex-1 flex flex-col gap-2">
-                      <div className="flex items-center gap-2">
-                        <label className="cursor-pointer bg-[#0F2573] hover:bg-[#041D56] text-white text-xs font-bold px-4 py-2 rounded-full transition-all inline-block">
+                    <div className="flex-1 flex flex-col gap-2 items-center sm:items-start w-full text-center sm:text-left">
+                      <div className="flex items-center justify-center sm:justify-start gap-2 w-full">
+                        <label className="cursor-pointer bg-[#0F2573] hover:bg-[#041D56] text-white text-[10px] md:text-xs font-bold px-3 md:px-4 py-1.5 md:py-2 rounded-full transition-all inline-block">
                           Pilih Foto
                           <input
                             type="file"
@@ -484,41 +477,41 @@ export default function Team() {
                           <button
                             type="button"
                             onClick={handleRemovePhoto}
-                            className="bg-red-50 hover:bg-red-100 text-red-600 text-xs font-bold px-3 py-2 rounded-full transition-all flex items-center gap-1 border border-red-200"
+                            className="bg-red-50 hover:bg-red-100 text-red-600 text-[10px] md:text-xs font-bold px-2.5 md:px-3 py-1.5 md:py-2 rounded-full transition-all flex items-center gap-1 border border-red-200 shrink-0"
                           >
-                            <FiTrash2 size={13} /> Hapus Foto
+                            <FiTrash2 size={12} /> Hapus
                           </button>
                         )}
                       </div>
-                      <p className="text-[10px] text-[#266CA9]">
+                      <p className="text-[9px] md:text-[10px] text-[#266CA9]">
                         {imageFile || currentImageUrl 
-                          ? "Foto terpasang. Klik 'Hapus Foto' untuk mengembalikan ke logo default." 
-                          : "Belum ada foto (Menggunakan logo default user)."}
+                          ? "Foto terpasang. Klik 'Hapus' untuk mengembalikan ke logo default." 
+                          : "Belum ada foto (Menggunakan logo default)."}
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="flex gap-4 pt-4">
+              <div className="flex gap-3 md:gap-4 pt-2 md:pt-4">
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="w-1/3 py-4 text-sm font-bold text-[#041D56] bg-gray-100 hover:bg-gray-200 rounded-2xl"
+                  className="w-1/3 py-3 md:py-4 text-xs md:text-sm font-bold text-[#041D56] bg-gray-100 hover:bg-gray-200 rounded-2xl"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
                   disabled={saving}
-                  className="w-2/3 py-4 text-sm font-bold text-white bg-[#266CA9] hover:bg-[#041D56] rounded-2xl shadow-lg transition-all disabled:opacity-70 flex items-center justify-center gap-2"
+                  className="w-2/3 py-3 md:py-4 text-xs md:text-sm font-bold text-white bg-[#266CA9] hover:bg-[#041D56] rounded-2xl shadow-lg transition-all disabled:opacity-70 flex items-center justify-center gap-2"
                 >
                   {saving ? (
                     <span className="animate-pulse">Menyimpan...</span>
                   ) : (
                     <>
-                      <FiCheck size={18} />
-                      {editId ? 'Simpan' : 'Tambah Anggota'}
+                      <FiCheck size={16} />
+                      {editId ? 'Simpan' : 'Tambah'}
                     </>
                   )}
                 </button>
@@ -530,10 +523,10 @@ export default function Team() {
 
       {/* POPUP MODAL CROPPER FOTO */}
       {showCropModal && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-          <div className="bg-white rounded-[2rem] w-full max-w-md overflow-hidden p-6 space-y-4 flex flex-col items-center">
+        <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+          <div className="bg-white rounded-[2rem] w-full max-w-md overflow-hidden p-6 space-y-4 flex flex-col items-center animate-in zoom-in-95">
             <div className="flex justify-between items-center w-full">
-              <h4 className="font-bold text-[#041D56] flex items-center gap-2">
+              <h4 className="font-bold text-[#041D56] flex items-center gap-2 text-sm md:text-base">
                 <FiCrop /> Krop & Atur Foto
               </h4>
               <button onClick={() => setShowCropModal(false)} className="text-gray-400 hover:text-red-500">
@@ -541,7 +534,7 @@ export default function Team() {
               </button>
             </div>
 
-            <div className="relative w-full h-64 bg-gray-900 rounded-2xl overflow-hidden">
+            <div className="relative w-full h-56 md:h-64 bg-gray-900 rounded-2xl overflow-hidden">
               <Cropper
                 image={tempImageSrc}
                 crop={crop}
@@ -571,13 +564,13 @@ export default function Team() {
             <div className="flex gap-3 w-full pt-2">
               <button
                 onClick={() => setShowCropModal(false)}
-                className="flex-1 py-3 text-xs font-bold text-gray-600 bg-gray-100 rounded-xl hover:bg-gray-200"
+                className="flex-1 py-3 text-xs md:text-sm font-bold text-gray-600 bg-gray-100 rounded-xl hover:bg-gray-200"
               >
                 Batal
               </button>
               <button
                 onClick={handleSaveCroppedImage}
-                className="flex-1 py-3 text-xs font-bold text-white bg-[#266CA9] hover:bg-[#041D56] rounded-xl shadow-md"
+                className="flex-1 py-3 text-xs md:text-sm font-bold text-white bg-[#266CA9] hover:bg-[#041D56] rounded-xl shadow-md"
               >
                 Terapkan Foto
               </button>
@@ -589,7 +582,6 @@ export default function Team() {
   );
 }
 
-// Komponen Kartu Anggota (Tombol Tambah Bawahan '+' Menyisipkan Tepat di Bawahnya)
 function MemberCard({ member, onEdit, onAddSub, onDeleteConfirm, confirmId, setConfirmId, onDelete, deletingId, isTree = false }) {
   const photoUrl = member.image_url || member.foto;
 
@@ -599,12 +591,11 @@ function MemberCard({ member, onEdit, onAddSub, onDeleteConfirm, confirmId, setC
     }`}>
       <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-br from-[#266CA9] via-[#041D56] to-[#01082D] transition-all duration-500 group-hover:h-28"></div>
 
-      {/* Tombol Aksi Hover */}
-      <div className="absolute top-3 right-3 flex gap-1.5 z-20 opacity-0 transform -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+      <div className="absolute top-3 right-3 flex gap-1.5 z-20 md:opacity-0 opacity-100 transform md:-translate-y-2 translate-y-0 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition-all duration-300">
         {onAddSub && (
           <button
             onClick={onAddSub}
-            className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md text-white border border-white/30 flex items-center justify-center hover:bg-green-500 transition-all"
+            className="w-8 h-8 rounded-full bg-white/20 md:bg-white/20 bg-black/20 backdrop-blur-md text-white border border-white/30 flex items-center justify-center hover:bg-green-500 transition-all"
             title="Tambah Anggota Tepat Di Bawah Ini"
           >
             <FiUserPlus size={13} />
@@ -612,14 +603,14 @@ function MemberCard({ member, onEdit, onAddSub, onDeleteConfirm, confirmId, setC
         )}
         <button
           onClick={() => onEdit(member)}
-          className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md text-white border border-white/30 flex items-center justify-center hover:bg-white hover:text-[#266CA9] transition-all"
+          className="w-8 h-8 rounded-full bg-white/20 md:bg-white/20 bg-black/20 backdrop-blur-md text-white border border-white/30 flex items-center justify-center hover:bg-white hover:text-[#266CA9] transition-all"
           title="Edit"
         >
           <FiEdit2 size={13} />
         </button>
         <button
           onClick={() => onDeleteConfirm(member.id)}
-          className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md text-red-300 border border-white/30 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all shadow-lg"
+          className="w-8 h-8 rounded-full bg-white/20 md:bg-white/20 bg-black/20 backdrop-blur-md text-red-200 border border-white/30 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all shadow-md"
           title="Hapus"
         >
           <FiTrash2 size={13} />
@@ -660,14 +651,14 @@ function MemberCard({ member, onEdit, onAddSub, onDeleteConfirm, confirmId, setC
           <div className="flex gap-2 w-full mt-3">
             <button
               onClick={() => setConfirmId(null)}
-              className="flex-1 py-2 rounded-xl bg-white/10 text-xs font-bold hover:bg-white/20"
+              className="flex-1 py-2 rounded-xl bg-white/10 text-xs font-bold hover:bg-white/20 transition-colors"
             >
               Batal
             </button>
             <button
               onClick={() => onDelete(member.id)}
               disabled={deletingId === member.id}
-              className="flex-1 py-2 rounded-xl bg-red-500 text-xs font-bold hover:bg-red-600 shadow-md"
+              className="flex-1 py-2 rounded-xl bg-red-500 text-xs font-bold hover:bg-red-600 shadow-md transition-colors"
             >
               {deletingId === member.id ? '...' : 'Hapus'}
             </button>

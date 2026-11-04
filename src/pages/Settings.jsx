@@ -9,7 +9,6 @@ import {
 } from 'react-icons/fi';
 
 export default function Settings() {
-  // 1. Ambil nama dari localStorage (jika tidak ada, pakai "Admin IAEETA")
   const [adminName, setAdminName] = useState(() => {
     return localStorage.getItem('adminName') || 'Admin IAEETA';
   });
@@ -37,12 +36,11 @@ export default function Settings() {
     fetchCurrentUser();
   }, []);
 
-  // 2. Fungsi simpan nama seketika saat diketik
   const handleNameChange = (e) => {
     const newName = e.target.value;
-    setAdminName(newName); // Update di layar saat ini
-    localStorage.setItem('adminName', newName); // Simpan ke browser
-    window.dispatchEvent(new Event('nameUpdated')); // Bunyikan alarm ke Navbar
+    setAdminName(newName);
+    localStorage.setItem('adminName', newName);
+    window.dispatchEvent(new Event('nameUpdated'));
   };
 
   const handleAvatarChange = (e) => {
@@ -97,20 +95,23 @@ export default function Settings() {
   };
 
   return (
-    <div className="space-y-8 max-w-5xl mx-auto pb-12">
+    // Mengurangi jarak spasi vertikal dan padding container di mobile
+    <div className="space-y-6 md:space-y-8 max-w-5xl mx-auto pb-12">
       <PageHeader title="Pengaturan Sistem & Keamanan" breadcrumb={["Admin", "Pengaturan"]} />
 
       {successMessage && (
-        <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 px-6 py-4 rounded-2xl flex items-center gap-3 shadow-sm animate-in fade-in duration-300">
+        <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 md:px-6 py-3.5 md:py-4 rounded-2xl flex items-center gap-3 shadow-sm animate-in fade-in duration-300">
           <FiCheckCircle className="text-xl text-emerald-600 shrink-0" />
-          <span className="text-sm font-bold">{successMessage}</span>
+          <span className="text-xs md:text-sm font-bold">{successMessage}</span>
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      {/* Grid responsif: 1 kolom di HP, 3 kolom di layar besar */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
         
+        {/* Kolom Kiri: Profil Singkat & Info Sistem */}
         <div className="space-y-6">
-          <div className="bg-white rounded-[2rem] p-6 border border-[#ADE1FB]/40 shadow-sm relative overflow-hidden">
+          <div className="bg-white rounded-[2rem] p-5 md:p-6 border border-[#ADE1FB]/40 shadow-sm relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-20 bg-gradient-to-r from-[#0F2573] to-[#041D56]"></div>
             <div className="relative z-10 flex flex-col items-center text-center mt-6">
               <label className="relative group cursor-pointer mb-3">
@@ -124,7 +125,6 @@ export default function Settings() {
                 <input type="file" accept="image/*" onChange={handleAvatarChange} className="hidden" />
               </label>
 
-              {/* Tampilkan Nama yang Dinamis */}
               <h3 className="font-extrabold text-[#01082D] text-lg">{adminName}</h3>
               <p className="text-xs font-bold text-[#266CA9] bg-[#ADE1FB]/20 px-3 py-1 rounded-full mt-1">Super Admin Utama</p>
               
@@ -141,7 +141,7 @@ export default function Settings() {
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-[#041D56] to-[#01082D] text-white rounded-[2rem] p-6 shadow-xl relative overflow-hidden">
+          <div className="bg-gradient-to-br from-[#041D56] to-[#01082D] text-white rounded-[2rem] p-5 md:p-6 shadow-xl relative overflow-hidden">
             <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-[#ADE1FB] opacity-10 rounded-full blur-xl"></div>
             <div className="flex items-center gap-3 mb-4 relative z-10">
               <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center backdrop-blur-md">
@@ -158,14 +158,17 @@ export default function Settings() {
           </div>
         </div>
 
+        {/* Kolom Kanan: Form Identitas & Ubah Sandi */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white rounded-[2.5rem] p-8 border border-[#ADE1FB]/40 shadow-sm">
+          
+          {/* Card Identitas Pengelola */}
+          <div className="bg-white rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-8 border border-[#ADE1FB]/40 shadow-sm">
             <div className="flex items-center gap-3 pb-5 border-b border-gray-100 mb-6">
-              <div className="w-10 h-10 rounded-2xl bg-[#0F2573]/10 flex items-center justify-center text-[#0F2573]">
+              <div className="w-10 h-10 rounded-2xl bg-[#0F2573]/10 flex items-center justify-center text-[#0F2573] shrink-0">
                 <FiUser size={20} />
               </div>
               <div>
-                <h3 className="font-extrabold text-lg text-[#01082D]">Identitas Pengelola</h3>
+                <h3 className="font-extrabold text-base md:text-lg text-[#01082D]">Identitas Pengelola</h3>
                 <p className="text-xs text-gray-500">Nama panggilan dan email aktif pengelola</p>
               </div>
             </div>
@@ -173,28 +176,28 @@ export default function Settings() {
             <div className="space-y-4">
               <div>
                 <label className="block text-xs font-extrabold text-[#041D56] uppercase tracking-wider mb-1.5 pl-1">Nama Administrator</label>
-                {/* 3. Gunakan handleNameChange di input nama */}
                 <input 
                   type="text" 
                   value={adminName} 
                   onChange={handleNameChange} 
-                  className="w-full px-4 py-3.5 bg-gray-50 border-2 border-gray-200 focus:border-[#0F2573] rounded-2xl text-sm font-medium text-[#01082D] focus:outline-none transition-all" 
+                  className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 focus:border-[#0F2573] rounded-2xl text-xs md:text-sm font-medium text-[#01082D] focus:outline-none transition-all" 
                 />
               </div>
               <div>
                 <label className="block text-xs font-extrabold text-[#041D56] uppercase tracking-wider mb-1.5 pl-1">Email Tertaut (Terkunci)</label>
-                <input type="email" value={adminEmail} disabled className="w-full px-4 py-3.5 bg-gray-100 border-2 border-gray-200 rounded-2xl text-sm font-medium text-gray-500 cursor-not-allowed select-none focus:outline-none" />
+                <input type="email" value={adminEmail} disabled className="w-full px-4 py-3 bg-gray-100 border-2 border-gray-200 rounded-2xl text-xs md:text-sm font-medium text-gray-500 cursor-not-allowed select-none focus:outline-none" />
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-[2.5rem] p-8 border border-[#ADE1FB]/40 shadow-sm">
+          {/* Card Ubah Kata Sandi */}
+          <div className="bg-white rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-8 border border-[#ADE1FB]/40 shadow-sm">
             <div className="flex items-center gap-3 pb-5 border-b border-gray-100 mb-6">
-              <div className="w-10 h-10 rounded-2xl bg-[#0F2573]/10 flex items-center justify-center text-[#0F2573]">
+              <div className="w-10 h-10 rounded-2xl bg-[#0F2573]/10 flex items-center justify-center text-[#0F2573] shrink-0">
                 <FiKey size={20} />
               </div>
               <div>
-                <h3 className="font-extrabold text-lg text-[#01082D]">Ubah Kata Sandi</h3>
+                <h3 className="font-extrabold text-base md:text-lg text-[#01082D]">Ubah Kata Sandi</h3>
                 <p className="text-xs text-gray-500">Masukkan sandi lama untuk membuat sandi baru</p>
               </div>
             </div>
@@ -203,7 +206,7 @@ export default function Settings() {
               <div>
                 <label className="block text-xs font-extrabold text-[#041D56] uppercase tracking-wider mb-1.5 pl-1">Kata Sandi Saat Ini</label>
                 <div className="relative">
-                  <input type={showCurrent ? "text" : "password"} placeholder="••••••••••••" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} className="w-full px-4 py-3.5 pr-12 bg-gray-50 border-2 border-gray-200 focus:border-[#0F2573] rounded-2xl text-sm font-medium text-[#01082D] focus:outline-none transition-all" required />
+                  <input type={showCurrent ? "text" : "password"} placeholder="••••••••••••" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} className="w-full px-4 py-3 pr-12 bg-gray-50 border-2 border-gray-200 focus:border-[#0F2573] rounded-2xl text-xs md:text-sm font-medium text-[#01082D] focus:outline-none transition-all" required />
                   <button type="button" onClick={() => setShowCurrent(!showCurrent)} className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-[#0F2573] transition-colors">
                     {showCurrent ? <FiEyeOff size={18} /> : <FiEye size={18} />}
                   </button>
@@ -213,11 +216,12 @@ export default function Settings() {
                 </div>
               </div>
 
+              {/* Grid 1 kolom di HP, 2 kolom di layar lebar untuk Sandi Baru & Konfirmasi */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-extrabold text-[#041D56] uppercase tracking-wider mb-1.5 pl-1">Kata Sandi Baru</label>
                   <div className="relative">
-                    <input type={showNew ? "text" : "password"} placeholder="••••••••••••" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className="w-full px-4 py-3.5 pr-12 bg-gray-50 border-2 border-gray-200 focus:border-[#0F2573] rounded-2xl text-sm font-medium text-[#01082D] focus:outline-none transition-all" required />
+                    <input type={showNew ? "text" : "password"} placeholder="••••••••••••" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className="w-full px-4 py-3 pr-12 bg-gray-50 border-2 border-gray-200 focus:border-[#0F2573] rounded-2xl text-xs md:text-sm font-medium text-[#01082D] focus:outline-none transition-all" required />
                     <button type="button" onClick={() => setShowNew(!showNew)} className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-[#0F2573]">
                       {showNew ? <FiEyeOff size={18} /> : <FiEye size={18} />}
                     </button>
@@ -226,7 +230,7 @@ export default function Settings() {
                 <div>
                   <label className="block text-xs font-extrabold text-[#041D56] uppercase tracking-wider mb-1.5 pl-1">Konfirmasi Sandi Baru</label>
                   <div className="relative">
-                    <input type={showConfirm ? "text" : "password"} placeholder="••••••••••••" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="w-full px-4 py-3.5 pr-12 bg-gray-50 border-2 border-gray-200 focus:border-[#0F2573] rounded-2xl text-sm font-medium text-[#01082D] focus:outline-none transition-all" required />
+                    <input type={showConfirm ? "text" : "password"} placeholder="••••••••••••" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="w-full px-4 py-3 pr-12 bg-gray-50 border-2 border-gray-200 focus:border-[#0F2573] rounded-2xl text-xs md:text-sm font-medium text-[#01082D] focus:outline-none transition-all" required />
                     <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-[#0F2573]">
                       {showConfirm ? <FiEyeOff size={18} /> : <FiEye size={18} />}
                     </button>
@@ -234,13 +238,15 @@ export default function Settings() {
                 </div>
               </div>
 
+              {/* Tombol Simpan Sandi: Lebar penuh di HP, rata kanan di layar besar */}
               <div className="pt-3 flex justify-end">
-                <button type="submit" disabled={loading} className="bg-[#0F2573] hover:bg-[#041D56] text-white text-sm font-bold px-8 py-3.5 rounded-2xl shadow-lg transition-all flex items-center gap-2 disabled:opacity-50">
+                <button type="submit" disabled={loading} className="w-full sm:w-auto bg-[#0F2573] hover:bg-[#041D56] text-white text-xs md:text-sm font-bold px-8 py-3.5 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50">
                   {loading ? 'Menyimpan...' : <><FiSave size={18}/> Simpan Kata Sandi</>}
                 </button>
               </div>
             </form>
           </div>
+
         </div>
       </div>
     </div>

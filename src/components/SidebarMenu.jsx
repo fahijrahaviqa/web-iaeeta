@@ -8,13 +8,9 @@ export default function SidebarMenu() {
   const location = useLocation();
   const navigate = useNavigate(); 
   
-  // State untuk mengontrol muncul/hilangnya pop-up Logout
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-  
-  // State untuk mengontrol buka/tutup menu di mobile dari klik logo Navbar
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Mencegah scroll pada body saat menu mobile terbuka
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden';
@@ -26,7 +22,6 @@ export default function SidebarMenu() {
     };
   }, [isMobileMenuOpen]);
 
-  // Menangkap sinyal klik logo dari Navbar untuk membuka laci di HP
   useEffect(() => {
     const handleOpenMenu = () => setIsMobileMenuOpen(true);
     window.addEventListener('openMobileMenu', handleOpenMenu);
@@ -36,14 +31,12 @@ export default function SidebarMenu() {
     };
   }, []);
 
-  // 1. Daftar menu utama di kapsul atas
   const topMenus = [
     { path: '/admin/', icon: <FiGrid className="text-xl" />, label: 'Dashboard' },
     { path: '/admin/galeri', icon: <FiImage className="text-xl" />, label: 'Galeri Foto' },
     { path: '/admin/tim-kami', icon: <FiUsers className="text-xl" />, label: 'Tim Kami' },
   ];
 
-  // 2. Pencarian indeks aktif untuk 3 menu atas
   const activeTopIndex = topMenus.findIndex((menu) => {
     if (menu.path === '/admin/') {
       return location.pathname === '/admin/' || location.pathname === '/admin' || location.pathname === '/';
@@ -51,7 +44,6 @@ export default function SidebarMenu() {
     return location.pathname.startsWith(menu.path);
   });
 
-  // 3. Fungsi untuk mengeksekusi Logout ke Supabase
   const confirmLogout = async () => {
     try {
       await supabase.auth.signOut();
@@ -68,7 +60,7 @@ export default function SidebarMenu() {
 
   return (
     <>
-      {/* OVERLAY GELAP - Muncul saat laci menu terbuka di HP */}
+      {/* OVERLAY GELAP */}
       {isMobileMenuOpen && (
         <div 
           className="md:hidden fixed inset-0 bg-[#01082D]/40 backdrop-blur-sm z-[60] transition-opacity"
@@ -86,7 +78,12 @@ export default function SidebarMenu() {
         {/* Bagian Atas: Logo Brand & Navigasi Utama */}
         <div className={`flex flex-col gap-6 w-full ${isMobileMenuOpen ? 'items-start' : 'md:items-center'}`}>
           
-          <div className="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center border border-gray-100 shadow-sm cursor-pointer hover:opacity-80 transition-all duration-300 ease-in-out mx-auto md:mx-0">
+          {/* Logo di Sidebar (Sekarang bisa diklik untuk menutup sidebar di mobile) */}
+          <div 
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center border border-gray-100 shadow-sm cursor-pointer hover:opacity-80 transition-all duration-300 ease-in-out mx-auto md:mx-0"
+            title="Tutup Menu"
+          >
             <img 
               src={logoIaeeta} 
               alt="Logo IAEETA" 
@@ -94,7 +91,6 @@ export default function SidebarMenu() {
             />
           </div>
 
-          {/* Wrapper Menu Atas: Di mobile bentuk biasa (rounded-2xl), di desktop bulat (rounded-full) */}
           <div className={`mt-0 relative bg-white p-2 flex flex-col gap-2 shadow-[0_4px_12px_-4px_rgba(0,0,0,0.1)] border border-gray-100 ${
             isMobileMenuOpen ? 'w-full rounded-2xl p-3' : 'rounded-full md:rounded-full'
           }`}>
@@ -132,7 +128,6 @@ export default function SidebarMenu() {
                   title={menu.label}
                 >
                   <div className="shrink-0 text-xl">{menu.icon}</div>
-                  {/* Judul besar yang muncul di mobile */}
                   <span className={`font-bold text-sm tracking-wide md:hidden ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
                     {menu.label}
                   </span>
@@ -166,7 +161,6 @@ export default function SidebarMenu() {
             </span>
           </NavLink>
 
-          {/* Tombol Logout */}
           <button 
             onClick={() => {
               handleMenuClick();
@@ -187,7 +181,7 @@ export default function SidebarMenu() {
         </div>
       </div>
 
-      {/* POP-UP KONFIRMASI LOGOUT (MODAL) */}
+      {/* POP-UP KONFIRMASI LOGOUT */}
       {showLogoutModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           <div 

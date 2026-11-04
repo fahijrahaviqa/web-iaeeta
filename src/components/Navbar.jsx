@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-// FiMenu sudah dihapus dari import
-import { FiChevronDown, FiMail, FiShield } from 'react-icons/fi';
+// FiMenu dikembalikan untuk tombol sidebar di mobile!
+import { FiMenu, FiChevronDown, FiMail, FiShield } from 'react-icons/fi';
 import logoIaeeta from "../assets/logo_iaeeta.png";
 import { supabase } from '../supabaseClient'; 
 
@@ -63,19 +63,25 @@ export default function Navbar() {
     <div className="w-full px-4 md:px-6 pt-4 pb-2 relative z-40">
       <div className="bg-white rounded-full shadow-[0_2px_10px_-3px_rgba(6,81,237,0.1)] border border-gray-100 px-3 md:px-4 py-2.5 flex items-center justify-between">
         
-        {/* Bagian Kiri: Logo & Nama Brand (Dibuat bisa diklik di Mobile) */}
-        <div 
-          onClick={openMobileMenu}
-          className="flex items-center gap-2 pl-1 cursor-pointer active:scale-95 transition-transform duration-200"
-          title="Buka Menu"
-        >
-          {/* Tambahan shrink-0 agar logo tidak gepeng di layar kecil */}
-          <img src={logoIaeeta} alt="Logo IAEETA" className="w-8 h-8 rounded-full object-cover shadow-sm border border-gray-100 shrink-0" />
+        {/* Bagian Kiri: Tombol Menu & Logo */}
+        <div className="flex items-center gap-2 pl-1">
           
-          {/* Teks penuh dipertahankan. Ukurannya menyesuaikan layar: HP (text-[13px]), Tablet (text-sm), Desktop (text-lg) */}
-          <span className="text-black font-bold text-[13px] sm:text-sm md:text-lg tracking-tight whitespace-nowrap">
-            IAEETA DPC PEKANBARU
-          </span>
+          {/* Tombol Garis Tiga (Hamburger) - HANYA muncul di Mobile */}
+          <button 
+            onClick={openMobileMenu}
+            className="md:hidden flex items-center justify-center p-1.5 bg-gray-50 text-[#01082D] rounded-md hover:bg-gray-200 transition-colors focus:outline-none border border-gray-100"
+            title="Buka Menu Sidebar"
+          >
+            <FiMenu size={20} />
+          </button>
+          
+          {/* Logo & Nama Brand (Sekarang murni tampilan, tidak bisa diklik) */}
+          <div className="flex items-center gap-2">
+            <img src={logoIaeeta} alt="Logo IAEETA" className="w-8 h-8 rounded-full object-cover shadow-sm border border-gray-100 shrink-0" />
+            <span className="text-black font-bold text-[13px] sm:text-sm md:text-lg tracking-tight whitespace-nowrap">
+              IAEETA DPC PEKANBARU
+            </span>
+          </div>
         </div>
 
         {/* Bagian Tengah: Menu Navigasi Desktop */}
